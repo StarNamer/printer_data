@@ -1,0 +1,2309 @@
+-------------------- Log Start | Wed Mar  6 00:00:58 2024 --------------------
+data_path: /home/pi/printer_data
+is_default_data_path: False
+config_file: /home/pi/printer_data/config/moonraker.conf
+startup_warnings: []
+verbose: False
+debug: False
+asyncio_debug: False
+is_backup_config: False
+is_python_package: False
+instance_uuid: 7bbe8f17ffe04b30874e3e7604f1c19c
+unix_socket_path: /home/pi/printer_data/comms/moonraker.sock
+software_version: v0.8.0-319-gf0ae517
+git_branch: master
+git_remote: origin
+git_repo_url: https://github.com/Arksine/moonraker.git
+modified_files: []
+unofficial_components: []
+log_file: /home/pi/printer_data/logs/moonraker.log
+python_version: 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0]
+launch_args: /home/pi/moonraker-env/bin/python /home/pi/moonraker/moonraker/moonraker.py -d /home/pi/printer_data
+msgspec_enabled: False
+uvloop_enabled: False
+
+#################### Moonraker Configuration ####################
+
+[server]
+host = 0.0.0.0
+port = 7125
+max_upload_size = 1024
+klippy_uds_address = ~/printer_data/comms/klippy.sock
+
+[file_manager]
+enable_object_processing = False
+
+[authorization]
+cors_domains = 
+	https://my.mainsail.xyz
+	http://my.mainsail.xyz
+	http://*.local
+	http://*.lan
+trusted_clients = 
+	10.0.0.0/8
+	127.0.0.0/8
+	169.254.0.0/16
+	172.16.0.0/12
+	192.168.0.0/16
+	FE80::/10
+	::1/128
+
+[octoprint_compat]
+
+[history]
+
+[announcements]
+subscriptions = 
+	mainsail
+
+[update_manager]
+refresh_interval = 168
+enable_auto_refresh = True
+
+[update_manager mainsail]
+type = web
+channel = stable
+repo = mainsail-crew/mainsail
+path = ~/mainsail
+
+[update_manager mainsail-config]
+type = git_repo
+primary_branch = master
+path = ~/mainsail-config
+origin = https://github.com/mainsail-crew/mainsail-config.git
+managed_services = klipper
+
+[update_manager crowsnest]
+type = git_repo
+path = ~/crowsnest
+origin = https://github.com/mainsail-crew/crowsnest.git
+managed_services = crowsnest
+install_script = tools/pkglist.sh
+
+[update_manager sonar]
+type = git_repo
+path = ~/sonar
+origin = https://github.com/mainsail-crew/sonar.git
+primary_branch = main
+managed_services = sonar
+install_script = tools/install.sh
+
+[update_manager fluidd-config]
+type = git_repo
+primary_branch = master
+path = ~/fluidd-config
+origin = https://github.com/fluidd-core/fluidd-config.git
+managed_services = klipper
+
+[update_manager fluidd]
+type = web
+channel = stable
+repo = fluidd-core/fluidd
+path = ~/fluidd
+
+[update_manager beacon]
+type = git_repo
+channel = dev
+path = ~/beacon_klipper
+origin = https://github.com/beacon3d/beacon_klipper.git
+env = ~/klippy-env/bin/python
+requirements = requirements.txt
+install_script = install.sh
+is_system_service = False
+managed_services = klipper
+info_tags = 
+	desc=Beacon Surface Scanner
+
+#################################################################
+All Configuration Files:
+/home/pi/printer_data/config/moonraker.conf
+#################################################################
+
+Database Versions: pylmdb = 1.4.1, lmdb = (0, 9, 29)
+Unsafe Shutdown Count: 7
+
+System Info:
+
+***python***
+  version: (3, 11, 2, 'final', 0)
+  version_string: 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0]
+
+***cpu_info***
+  cpu_count: 4
+  bits: 64bit
+  processor: aarch64
+  cpu_desc: 
+  serial_number: 100000004537b071
+  hardware_desc: BCM2835
+  model: Raspberry Pi 4 Model B Rev 1.1
+  total_memory: 3704496
+  memory_units: kB
+
+***sd_info***
+
+***distribution***
+  name: Debian GNU/Linux 12 (bookworm)
+  id: debian
+  version: 12
+  version_parts: {'major': '12', 'minor': '', 'build_number': ''}
+  like: 
+  codename: bookworm
+  release_info: {'name': 'MainsailOS', 'version_id': '1.2.1', 'codename': 'bullseye', 'id': 'mainsailos'}
+
+***virtualization***
+  virt_type: none
+  virt_identifier: none
+
+***network***
+
+***canbus***
+
+***Allowed Services***
+  klipper_mcu
+  webcamd
+  MoonCord
+  KlipperScreen
+  moonraker-telegram-bot
+  moonraker-obico
+  sonar
+  crowsnest
+  octoeverywhere
+  ratos-configurator
+  mobileraker
+Module libcamera unavailble, import failed
+
+Systemd unit moonraker.service:
+unit_name: moonraker.service
+is_default: True
+manager: systemd
+Properties:
+**Requires=['sysinit.target', 'network-online.target', '-.mount', 'system.slice']
+**After=['basic.target', 'sysinit.target', 'systemd-journald.socket', 'network-online.target', 'system.slice', '-.mount']
+**SupplementaryGroups=['moonraker-admin']
+**EnvironmentFiles=/home/pi/printer_data/systemd/moonraker.env
+**ExecStart=/home/pi/moonraker-env/bin/python $MOONRAKER_ARGS
+**WorkingDirectory=/home/pi/moonraker
+**FragmentPath=/etc/systemd/system/moonraker.service
+**Description=API Server for Klipper SV1
+**User=pi
+
+Systemd unit klipper.service:
+unit_name: klipper.service
+is_default: True
+manager: systemd
+Properties:
+**Requires=['sysinit.target', '-.mount', 'system.slice']
+**After=['sysinit.target', 'basic.target', 'network-online.target', '-.mount', 'system.slice', 'systemd-journald.socket']
+**SupplementaryGroups=[]
+**EnvironmentFiles=/home/pi/printer_data/systemd/klipper.env
+**ExecStart=/home/pi/klippy-env/bin/python $KLIPPER_ARGS
+**WorkingDirectory=/home/pi/klipper
+**FragmentPath=/etc/systemd/system/klipper.service
+**Description=Klipper 3D Printer Firmware SV1
+**User=pi
+Git Repo moonraker: No warnings detected
+Git Repo klipper: Warnings detected:
+  Repo is dirty.  Detected the following modifed files: ['docs/Bed_Mesh.md', 'src/generic/armcm_timer.c', 'src/sched.c']
+Git Repo mainsail-config: No warnings detected
+Git Repo crowsnest: No warnings detected
+Git Repo sonar: No warnings detected
+Git Repo fluidd-config: No warnings detected
+Git Repo beacon: No warnings detected
+Klipper Version: v0.12.0-115-gb98375b3-dirty
+2024-03-06 00:00:58,983 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1020.03 seconds
+2024-03-06 00:01:58,985 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1080.03 seconds
+2024-03-06 00:02:58,987 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1140.03 seconds
+2024-03-06 00:03:33,734 [application.py:log_request()] - 101 GET /websocket?token=XBGAB2Q6NR4PGOKLXC36QSM7BXL42QND (192.168.1.91) [_TRUSTED_USER_] 8.23ms
+2024-03-06 00:03:33,734 [websockets.py:open()] - Websocket Opened: ID: 548035321808, Proxied: True, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36, Host Name: 192.168.1.5
+2024-03-06 00:03:33,738 [websockets.py:_handle_identify()] - Websocket 548035321808 Client Identified - Name: fluidd, Version: 1.28.1-d1ef3a4, Type: web
+2024-03-06 00:03:33,740 [file_manager.py:get_file_list()] - Updating File List <config>...
+2024-03-06 00:03:58,988 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1200.03 seconds
+2024-03-06 00:04:58,990 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1260.03 seconds
+2024-03-06 00:05:58,992 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1320.03 seconds
+2024-03-06 00:06:58,993 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1380.04 seconds
+2024-03-06 00:07:05,857 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 00:07:05,859 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 00:07:15,814 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 00:07:15,817 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 00:07:58,996 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1440.04 seconds
+2024-03-06 00:08:58,997 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1500.04 seconds
+2024-03-06 00:09:59,002 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1560.04 seconds
+2024-03-06 00:10:59,005 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1620.05 seconds
+2024-03-06 00:11:59,006 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1680.05 seconds
+2024-03-06 00:12:59,008 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1740.05 seconds
+2024-03-06 00:13:59,009 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1800.05 seconds
+2024-03-06 00:14:59,011 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1860.05 seconds
+2024-03-06 00:15:59,012 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1920.05 seconds
+2024-03-06 00:16:59,014 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1980.06 seconds
+2024-03-06 00:17:59,016 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2040.06 seconds
+2024-03-06 00:18:59,018 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2100.06 seconds
+2024-03-06 00:19:59,019 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2160.06 seconds
+2024-03-06 00:20:59,020 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2220.06 seconds
+2024-03-06 00:21:59,021 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2280.06 seconds
+2024-03-06 00:22:06,878 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 00:22:06,879 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 00:22:16,895 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 00:22:16,896 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 00:22:59,022 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2340.06 seconds
+2024-03-06 00:23:59,024 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2400.07 seconds
+2024-03-06 00:24:59,026 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2460.07 seconds
+2024-03-06 00:25:59,033 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2520.08 seconds
+2024-03-06 00:26:59,035 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2580.08 seconds
+2024-03-06 00:27:59,036 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2640.08 seconds
+2024-03-06 00:28:59,036 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2700.08 seconds
+2024-03-06 00:29:59,038 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2760.08 seconds
+2024-03-06 00:30:59,039 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2820.08 seconds
+2024-03-06 00:31:59,040 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2880.08 seconds
+2024-03-06 00:32:59,040 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2940.08 seconds
+2024-03-06 00:33:59,041 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3000.08 seconds
+2024-03-06 00:34:59,044 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3060.09 seconds
+2024-03-06 00:35:59,045 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3120.09 seconds
+2024-03-06 00:36:59,046 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3180.09 seconds
+2024-03-06 00:37:59,047 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3240.09 seconds
+2024-03-06 00:38:59,049 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3300.09 seconds
+2024-03-06 00:39:59,050 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3360.09 seconds
+2024-03-06 00:40:59,051 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3420.09 seconds
+2024-03-06 00:41:59,052 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3480.09 seconds
+2024-03-06 00:42:59,053 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3540.10 seconds
+2024-03-06 00:43:38,607 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 127.0.0.1
+2024-03-06 00:43:59,054 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3600.10 seconds
+2024-03-06 00:44:59,057 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3660.10 seconds
+2024-03-06 00:45:59,059 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3720.10 seconds
+2024-03-06 00:46:59,060 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3780.10 seconds
+2024-03-06 00:47:59,062 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3840.10 seconds
+2024-03-06 00:48:59,063 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3900.11 seconds
+2024-03-06 00:49:59,064 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3960.11 seconds
+2024-03-06 00:50:59,065 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4020.11 seconds
+2024-03-06 00:51:59,066 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4080.11 seconds
+2024-03-06 00:52:59,066 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4140.11 seconds
+2024-03-06 00:53:59,067 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4200.11 seconds
+2024-03-06 00:54:59,068 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4260.11 seconds
+2024-03-06 00:55:59,069 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4320.11 seconds
+2024-03-06 00:56:59,071 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4380.11 seconds
+2024-03-06 00:57:59,072 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4440.11 seconds
+2024-03-06 00:58:59,073 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4500.12 seconds
+2024-03-06 00:59:59,075 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4560.12 seconds
+2024-03-06 01:00:59,078 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4620.12 seconds
+2024-03-06 01:01:59,079 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4680.12 seconds
+2024-03-06 01:02:59,081 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4740.12 seconds
+2024-03-06 01:03:59,083 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4800.13 seconds
+2024-03-06 01:04:59,084 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4860.13 seconds
+2024-03-06 01:05:59,085 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4920.13 seconds
+2024-03-06 01:06:59,086 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4980.13 seconds
+2024-03-06 01:07:59,088 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5040.13 seconds
+2024-03-06 01:08:38,611 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 192.168.1.91
+2024-03-06 01:08:59,088 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5100.13 seconds
+2024-03-06 01:09:59,089 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5160.13 seconds
+2024-03-06 01:10:59,090 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5220.13 seconds
+2024-03-06 01:11:59,091 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5280.13 seconds
+2024-03-06 01:12:59,092 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5340.13 seconds
+2024-03-06 01:13:59,094 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5400.14 seconds
+2024-03-06 01:14:59,095 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5460.14 seconds
+2024-03-06 01:15:59,097 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5520.14 seconds
+2024-03-06 01:16:59,098 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5580.14 seconds
+2024-03-06 01:17:59,101 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5640.14 seconds
+2024-03-06 01:18:59,102 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5700.14 seconds
+2024-03-06 01:19:59,103 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5760.15 seconds
+2024-03-06 01:20:59,105 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5820.15 seconds
+2024-03-06 01:21:59,108 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5880.15 seconds
+2024-03-06 01:22:59,109 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5940.15 seconds
+2024-03-06 01:23:59,110 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6000.15 seconds
+2024-03-06 01:24:59,112 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6060.15 seconds
+2024-03-06 01:25:59,114 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6120.16 seconds
+2024-03-06 01:26:59,115 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6180.16 seconds
+2024-03-06 01:27:59,116 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6240.16 seconds
+2024-03-06 01:28:59,117 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6300.16 seconds
+2024-03-06 01:29:59,118 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6360.16 seconds
+2024-03-06 01:30:59,120 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6420.16 seconds
+2024-03-06 01:31:59,120 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6480.16 seconds
+2024-03-06 01:32:59,122 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6540.16 seconds
+2024-03-06 01:33:59,124 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6600.17 seconds
+2024-03-06 01:34:59,125 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6660.17 seconds
+2024-03-06 01:35:59,125 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6720.17 seconds
+2024-03-06 01:36:59,126 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6780.17 seconds
+2024-03-06 01:37:59,128 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6840.17 seconds
+2024-03-06 01:38:59,129 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6900.17 seconds
+2024-03-06 01:39:59,130 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6960.17 seconds
+2024-03-06 01:40:59,131 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7020.17 seconds
+2024-03-06 01:41:59,134 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7080.18 seconds
+2024-03-06 01:42:59,135 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7140.18 seconds
+2024-03-06 01:43:59,136 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7200.18 seconds
+2024-03-06 01:44:59,138 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7260.18 seconds
+2024-03-06 01:45:59,139 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7320.18 seconds
+2024-03-06 01:46:59,140 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7380.18 seconds
+2024-03-06 01:47:59,142 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7440.18 seconds
+2024-03-06 01:48:59,144 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7500.19 seconds
+2024-03-06 01:49:59,146 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7560.19 seconds
+2024-03-06 01:50:59,147 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7620.19 seconds
+2024-03-06 01:51:59,148 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7680.19 seconds
+2024-03-06 01:52:12,375 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 01:52:12,375 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 01:52:22,381 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 01:52:22,382 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 01:52:59,149 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7740.19 seconds
+2024-03-06 01:53:59,151 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7800.19 seconds
+2024-03-06 01:54:59,152 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7860.19 seconds
+2024-03-06 01:55:59,153 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7920.20 seconds
+2024-03-06 01:56:59,154 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7980.20 seconds
+2024-03-06 01:57:59,155 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8040.20 seconds
+2024-03-06 01:58:59,156 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8100.20 seconds
+2024-03-06 01:59:59,158 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8160.20 seconds
+2024-03-06 02:00:59,159 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8220.20 seconds
+2024-03-06 02:01:59,160 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8280.20 seconds
+2024-03-06 02:02:59,162 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8340.20 seconds
+2024-03-06 02:03:59,163 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8400.21 seconds
+2024-03-06 02:04:59,164 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8460.21 seconds
+2024-03-06 02:05:59,165 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8520.21 seconds
+2024-03-06 02:06:59,167 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8580.21 seconds
+2024-03-06 02:07:13,287 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 02:07:13,287 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 02:07:23,303 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 02:07:23,304 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 02:07:59,169 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8640.21 seconds
+2024-03-06 02:08:59,175 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8700.22 seconds
+2024-03-06 02:09:59,176 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8760.22 seconds
+2024-03-06 02:10:59,179 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8820.22 seconds
+2024-03-06 02:11:59,179 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8880.22 seconds
+2024-03-06 02:12:59,180 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8940.22 seconds
+2024-03-06 02:13:59,181 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9000.22 seconds
+2024-03-06 02:14:59,183 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9060.22 seconds
+2024-03-06 02:15:59,184 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9120.23 seconds
+2024-03-06 02:16:59,185 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9180.23 seconds
+2024-03-06 02:17:59,186 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9240.23 seconds
+2024-03-06 02:18:59,187 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9300.23 seconds
+2024-03-06 02:19:59,188 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9360.23 seconds
+2024-03-06 02:20:59,190 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9420.23 seconds
+2024-03-06 02:21:59,191 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9480.23 seconds
+2024-03-06 02:22:14,190 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 02:22:14,191 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 02:22:24,205 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 02:22:24,206 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 02:22:59,192 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9540.23 seconds
+2024-03-06 02:23:59,194 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9600.24 seconds
+2024-03-06 02:24:59,195 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9660.24 seconds
+2024-03-06 02:25:59,196 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9720.24 seconds
+2024-03-06 02:26:59,197 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9780.24 seconds
+2024-03-06 02:27:59,198 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9840.24 seconds
+2024-03-06 02:28:59,199 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9900.24 seconds
+2024-03-06 02:29:59,200 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9960.24 seconds
+2024-03-06 02:30:59,202 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10020.24 seconds
+2024-03-06 02:31:59,203 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10080.25 seconds
+2024-03-06 02:32:59,204 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10140.25 seconds
+2024-03-06 02:33:59,205 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10200.25 seconds
+2024-03-06 02:34:59,206 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10260.25 seconds
+2024-03-06 02:35:59,209 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10320.25 seconds
+2024-03-06 02:36:59,209 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10380.25 seconds
+2024-03-06 02:37:15,145 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 02:37:15,146 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 02:37:25,145 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 02:37:25,146 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 02:37:59,210 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10440.25 seconds
+2024-03-06 02:38:59,212 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10500.25 seconds
+2024-03-06 02:39:59,213 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10560.26 seconds
+2024-03-06 02:40:59,215 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10620.26 seconds
+2024-03-06 02:41:59,217 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10680.26 seconds
+2024-03-06 02:42:59,218 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10740.26 seconds
+2024-03-06 02:43:59,219 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10800.26 seconds
+2024-03-06 02:44:59,221 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10860.26 seconds
+2024-03-06 02:45:59,222 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10920.26 seconds
+2024-03-06 02:46:59,223 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10980.26 seconds
+2024-03-06 02:47:59,225 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11040.27 seconds
+2024-03-06 02:48:59,226 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11100.27 seconds
+2024-03-06 02:49:59,227 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11160.27 seconds
+2024-03-06 02:50:59,229 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11220.27 seconds
+2024-03-06 02:51:59,230 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11280.27 seconds
+2024-03-06 02:52:59,231 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11340.27 seconds
+2024-03-06 02:53:59,233 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11400.28 seconds
+2024-03-06 02:54:59,234 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11460.28 seconds
+2024-03-06 02:55:59,235 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11520.28 seconds
+2024-03-06 02:56:59,236 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11580.28 seconds
+2024-03-06 02:57:59,238 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11640.28 seconds
+2024-03-06 02:58:59,239 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11700.28 seconds
+2024-03-06 02:59:59,240 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11760.28 seconds
+2024-03-06 03:00:59,241 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11820.28 seconds
+2024-03-06 03:01:59,243 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11880.29 seconds
+2024-03-06 03:02:59,244 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11940.29 seconds
+2024-03-06 03:03:59,245 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12000.29 seconds
+2024-03-06 03:04:59,248 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12060.29 seconds
+2024-03-06 03:05:59,250 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12120.29 seconds
+2024-03-06 03:06:59,251 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12180.29 seconds
+2024-03-06 03:07:59,252 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12240.29 seconds
+2024-03-06 03:08:59,254 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12300.30 seconds
+2024-03-06 03:09:59,255 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12360.30 seconds
+2024-03-06 03:10:59,257 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12420.30 seconds
+2024-03-06 03:11:59,258 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12480.30 seconds
+2024-03-06 03:12:59,260 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12540.30 seconds
+2024-03-06 03:13:59,261 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12600.30 seconds
+2024-03-06 03:14:59,263 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12660.31 seconds
+2024-03-06 03:15:59,264 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12720.31 seconds
+2024-03-06 03:16:59,266 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12780.31 seconds
+2024-03-06 03:17:59,268 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12840.31 seconds
+2024-03-06 03:18:59,270 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12900.31 seconds
+2024-03-06 03:19:59,270 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12960.31 seconds
+2024-03-06 03:20:59,272 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13020.31 seconds
+2024-03-06 03:21:59,273 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13080.32 seconds
+2024-03-06 03:22:59,274 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13140.32 seconds
+2024-03-06 03:23:59,276 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13200.32 seconds
+2024-03-06 03:24:59,278 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13260.32 seconds
+2024-03-06 03:25:59,279 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13320.32 seconds
+2024-03-06 03:26:59,280 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13380.32 seconds
+2024-03-06 03:27:59,282 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13440.32 seconds
+2024-03-06 03:28:59,282 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13500.32 seconds
+2024-03-06 03:29:59,284 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13560.33 seconds
+2024-03-06 03:30:59,295 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13620.34 seconds
+2024-03-06 03:31:59,296 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13680.34 seconds
+2024-03-06 03:32:59,298 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13740.34 seconds
+2024-03-06 03:33:59,298 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13800.34 seconds
+2024-03-06 03:34:59,299 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13860.34 seconds
+2024-03-06 03:35:59,301 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13920.34 seconds
+2024-03-06 03:36:59,302 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13980.34 seconds
+2024-03-06 03:37:59,304 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14040.35 seconds
+2024-03-06 03:38:59,305 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14100.35 seconds
+2024-03-06 03:39:59,306 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14160.35 seconds
+2024-03-06 03:40:59,308 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14220.35 seconds
+2024-03-06 03:41:59,308 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14280.35 seconds
+2024-03-06 03:42:59,310 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14340.35 seconds
+2024-03-06 03:43:59,311 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14400.35 seconds
+2024-03-06 03:44:59,312 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14460.35 seconds
+2024-03-06 03:45:59,314 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14520.36 seconds
+2024-03-06 03:46:59,316 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14580.36 seconds
+2024-03-06 03:47:59,317 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14640.36 seconds
+2024-03-06 03:48:59,319 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14700.36 seconds
+2024-03-06 03:49:59,320 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14760.36 seconds
+2024-03-06 03:50:59,321 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14820.36 seconds
+2024-03-06 03:51:59,322 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14880.36 seconds
+2024-03-06 03:52:59,323 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 14940.37 seconds
+2024-03-06 03:53:59,324 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15000.37 seconds
+2024-03-06 03:54:59,326 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15060.37 seconds
+2024-03-06 03:55:59,327 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15120.37 seconds
+2024-03-06 03:56:59,328 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15180.37 seconds
+2024-03-06 03:57:59,328 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15240.37 seconds
+2024-03-06 03:58:59,329 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15300.37 seconds
+2024-03-06 03:59:59,330 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15360.37 seconds
+2024-03-06 04:00:59,332 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15420.37 seconds
+2024-03-06 04:01:59,333 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15480.38 seconds
+2024-03-06 04:02:59,334 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15540.38 seconds
+2024-03-06 04:03:59,336 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15600.38 seconds
+2024-03-06 04:04:59,343 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15660.39 seconds
+2024-03-06 04:05:59,345 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15720.39 seconds
+2024-03-06 04:06:59,346 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15780.39 seconds
+2024-03-06 04:07:59,348 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15840.39 seconds
+2024-03-06 04:08:59,349 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15900.39 seconds
+2024-03-06 04:09:59,351 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 15960.39 seconds
+2024-03-06 04:10:59,351 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16020.39 seconds
+2024-03-06 04:11:59,353 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16080.39 seconds
+2024-03-06 04:12:59,355 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16140.40 seconds
+2024-03-06 04:13:59,356 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16200.40 seconds
+2024-03-06 04:14:59,358 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16260.40 seconds
+2024-03-06 04:15:59,359 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16320.40 seconds
+2024-03-06 04:16:59,360 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16380.40 seconds
+2024-03-06 04:17:59,361 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16440.40 seconds
+2024-03-06 04:18:59,362 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16500.40 seconds
+2024-03-06 04:19:59,363 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16560.41 seconds
+2024-03-06 04:20:59,364 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16620.41 seconds
+2024-03-06 04:21:59,365 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16680.41 seconds
+2024-03-06 04:22:11,564 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 04:22:11,566 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 04:22:21,582 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 04:22:21,584 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 04:22:59,366 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16740.41 seconds
+2024-03-06 04:23:59,368 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16800.41 seconds
+2024-03-06 04:24:59,369 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16860.41 seconds
+2024-03-06 04:25:59,372 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16920.41 seconds
+2024-03-06 04:26:59,373 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 16980.42 seconds
+2024-03-06 04:27:59,374 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17040.42 seconds
+2024-03-06 04:28:59,374 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17100.42 seconds
+2024-03-06 04:29:59,376 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17160.42 seconds
+2024-03-06 04:30:59,377 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17220.42 seconds
+2024-03-06 04:31:59,379 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17280.42 seconds
+2024-03-06 04:32:59,380 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17340.42 seconds
+2024-03-06 04:33:59,382 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17400.42 seconds
+2024-03-06 04:34:59,383 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17460.43 seconds
+2024-03-06 04:35:59,384 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17520.43 seconds
+2024-03-06 04:36:59,386 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17580.43 seconds
+2024-03-06 04:37:12,516 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 04:37:12,516 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 04:37:22,527 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 04:37:22,528 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 04:37:59,387 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17640.43 seconds
+2024-03-06 04:38:59,387 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17700.43 seconds
+2024-03-06 04:39:59,389 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17760.43 seconds
+2024-03-06 04:40:59,390 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17820.43 seconds
+2024-03-06 04:41:59,392 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17880.43 seconds
+2024-03-06 04:42:59,394 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 17940.44 seconds
+2024-03-06 04:43:59,395 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18000.44 seconds
+2024-03-06 04:44:59,396 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18060.44 seconds
+2024-03-06 04:45:59,398 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18120.44 seconds
+2024-03-06 04:46:59,400 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18180.44 seconds
+2024-03-06 04:47:59,401 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18240.44 seconds
+2024-03-06 04:48:59,402 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18300.44 seconds
+2024-03-06 04:49:59,403 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18360.45 seconds
+2024-03-06 04:50:59,406 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18420.45 seconds
+2024-03-06 04:51:59,408 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18480.45 seconds
+2024-03-06 04:52:13,438 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 04:52:13,438 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 04:52:23,447 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 04:52:23,448 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 04:52:59,410 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18540.45 seconds
+2024-03-06 04:53:59,412 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18600.45 seconds
+2024-03-06 04:54:59,413 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18660.46 seconds
+2024-03-06 04:55:59,414 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18720.46 seconds
+2024-03-06 04:56:59,416 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18780.46 seconds
+2024-03-06 04:57:59,417 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18840.46 seconds
+2024-03-06 04:58:59,418 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18900.46 seconds
+2024-03-06 04:59:59,419 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 18960.46 seconds
+2024-03-06 05:00:59,420 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19020.46 seconds
+2024-03-06 05:01:59,421 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19080.46 seconds
+2024-03-06 05:02:59,423 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19140.47 seconds
+2024-03-06 05:03:59,425 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19200.47 seconds
+2024-03-06 05:04:59,426 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19260.47 seconds
+2024-03-06 05:05:59,427 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19320.47 seconds
+2024-03-06 05:06:59,428 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19380.47 seconds
+2024-03-06 05:07:14,447 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 05:07:14,449 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 05:07:24,444 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 05:07:24,446 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 05:07:59,429 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19440.47 seconds
+2024-03-06 05:08:59,430 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19500.47 seconds
+2024-03-06 05:09:59,432 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19560.47 seconds
+2024-03-06 05:10:59,433 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19620.48 seconds
+2024-03-06 05:11:59,435 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19680.48 seconds
+2024-03-06 05:12:59,436 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19740.48 seconds
+2024-03-06 05:13:59,438 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19800.48 seconds
+2024-03-06 05:14:59,440 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19860.48 seconds
+2024-03-06 05:15:59,441 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19920.48 seconds
+2024-03-06 05:16:59,442 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 19980.48 seconds
+2024-03-06 05:17:59,444 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20040.49 seconds
+2024-03-06 05:18:59,445 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20100.49 seconds
+2024-03-06 05:19:59,446 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20160.49 seconds
+2024-03-06 05:20:59,447 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20220.49 seconds
+2024-03-06 05:21:59,449 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20280.49 seconds
+2024-03-06 05:22:15,395 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 05:22:15,396 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 05:22:25,411 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 05:22:25,412 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 05:22:59,450 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20340.49 seconds
+2024-03-06 05:23:59,451 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20400.49 seconds
+2024-03-06 05:24:59,453 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20460.50 seconds
+2024-03-06 05:25:59,455 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20520.50 seconds
+2024-03-06 05:26:59,456 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20580.50 seconds
+2024-03-06 05:27:59,457 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20640.50 seconds
+2024-03-06 05:28:59,458 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20700.50 seconds
+2024-03-06 05:29:59,459 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20760.50 seconds
+2024-03-06 05:30:59,460 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20820.50 seconds
+2024-03-06 05:31:59,461 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20880.50 seconds
+2024-03-06 05:32:59,462 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 20940.50 seconds
+2024-03-06 05:33:59,463 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21000.51 seconds
+2024-03-06 05:34:59,464 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21060.51 seconds
+2024-03-06 05:35:59,465 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21120.51 seconds
+2024-03-06 05:36:59,466 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21180.51 seconds
+2024-03-06 05:37:16,281 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 05:37:16,281 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 05:37:26,293 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 05:37:26,293 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 05:37:59,467 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21240.51 seconds
+2024-03-06 05:38:59,468 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21300.51 seconds
+2024-03-06 05:39:59,469 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21360.51 seconds
+2024-03-06 05:40:59,471 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21420.51 seconds
+2024-03-06 05:41:59,472 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21480.51 seconds
+2024-03-06 05:42:59,473 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21540.52 seconds
+2024-03-06 05:43:59,475 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21600.52 seconds
+2024-03-06 05:44:59,475 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21660.52 seconds
+2024-03-06 05:45:59,476 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21720.52 seconds
+2024-03-06 05:46:59,478 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21780.52 seconds
+2024-03-06 05:47:59,479 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21840.52 seconds
+2024-03-06 05:48:59,480 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21900.52 seconds
+2024-03-06 05:49:59,482 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 21960.52 seconds
+2024-03-06 05:50:59,483 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22020.53 seconds
+2024-03-06 05:51:59,485 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22080.53 seconds
+2024-03-06 05:52:17,175 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 05:52:17,176 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 05:52:27,184 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 05:52:27,185 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 05:52:59,486 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22140.53 seconds
+2024-03-06 05:53:59,487 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22200.53 seconds
+2024-03-06 05:54:59,488 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22260.53 seconds
+2024-03-06 05:55:59,489 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22320.53 seconds
+2024-03-06 05:56:59,491 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22380.53 seconds
+2024-03-06 05:57:59,492 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22440.53 seconds
+2024-03-06 05:58:59,493 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22500.54 seconds
+2024-03-06 05:59:59,494 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22560.54 seconds
+2024-03-06 06:00:59,495 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22620.54 seconds
+2024-03-06 06:01:59,496 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22680.54 seconds
+2024-03-06 06:02:59,497 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22740.54 seconds
+2024-03-06 06:03:59,500 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22800.54 seconds
+2024-03-06 06:04:59,502 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22860.54 seconds
+2024-03-06 06:05:59,503 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22920.55 seconds
+2024-03-06 06:06:59,504 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 22980.55 seconds
+2024-03-06 06:07:18,094 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 06:07:18,096 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 06:07:28,116 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 06:07:28,117 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 06:07:59,505 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23040.55 seconds
+2024-03-06 06:08:59,506 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23100.55 seconds
+2024-03-06 06:09:59,507 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23160.55 seconds
+2024-03-06 06:10:59,508 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23220.55 seconds
+2024-03-06 06:11:59,509 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23280.55 seconds
+2024-03-06 06:12:59,511 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23340.55 seconds
+2024-03-06 06:13:59,513 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23400.56 seconds
+2024-03-06 06:14:59,514 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23460.56 seconds
+2024-03-06 06:15:59,515 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23520.56 seconds
+2024-03-06 06:16:59,516 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23580.56 seconds
+2024-03-06 06:17:59,518 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23640.56 seconds
+2024-03-06 06:18:59,519 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23700.56 seconds
+2024-03-06 06:19:59,521 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23760.56 seconds
+2024-03-06 06:20:59,521 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23820.56 seconds
+2024-03-06 06:21:59,522 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23880.56 seconds
+2024-03-06 06:22:59,524 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 23940.57 seconds
+2024-03-06 06:23:59,525 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24000.57 seconds
+2024-03-06 06:24:59,527 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24060.57 seconds
+2024-03-06 06:25:59,528 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24120.57 seconds
+2024-03-06 06:26:59,529 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24180.57 seconds
+2024-03-06 06:27:59,530 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24240.57 seconds
+2024-03-06 06:28:59,531 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24300.57 seconds
+2024-03-06 06:29:59,532 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24360.57 seconds
+2024-03-06 06:30:59,534 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24420.58 seconds
+2024-03-06 06:31:59,535 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24480.58 seconds
+2024-03-06 06:32:59,536 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24540.58 seconds
+2024-03-06 06:33:59,537 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24600.58 seconds
+2024-03-06 06:34:59,538 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24660.58 seconds
+2024-03-06 06:35:59,540 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24720.58 seconds
+2024-03-06 06:36:59,541 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24780.58 seconds
+2024-03-06 06:37:59,542 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24840.58 seconds
+2024-03-06 06:38:59,545 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24900.59 seconds
+2024-03-06 06:39:59,545 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 24960.59 seconds
+2024-03-06 06:40:59,547 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25020.59 seconds
+2024-03-06 06:41:59,549 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25080.59 seconds
+2024-03-06 06:42:59,551 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25140.59 seconds
+2024-03-06 06:43:59,552 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25200.59 seconds
+2024-03-06 06:44:59,553 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25260.60 seconds
+2024-03-06 06:45:59,554 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25320.60 seconds
+2024-03-06 06:46:59,559 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25380.60 seconds
+2024-03-06 06:47:59,560 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25440.60 seconds
+2024-03-06 06:48:59,562 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25500.60 seconds
+2024-03-06 06:49:59,563 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25560.61 seconds
+2024-03-06 06:50:59,564 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25620.61 seconds
+2024-03-06 06:51:59,565 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25680.61 seconds
+2024-03-06 06:52:59,567 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25740.61 seconds
+2024-03-06 06:53:59,568 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25800.61 seconds
+2024-03-06 06:54:59,569 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25860.61 seconds
+2024-03-06 06:55:59,570 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25920.61 seconds
+2024-03-06 06:56:59,571 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 25980.61 seconds
+2024-03-06 06:57:59,573 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26040.62 seconds
+2024-03-06 06:58:59,574 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26100.62 seconds
+2024-03-06 06:59:59,575 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26160.62 seconds
+2024-03-06 07:00:59,576 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26220.62 seconds
+2024-03-06 07:01:59,578 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26280.62 seconds
+2024-03-06 07:02:59,579 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26340.62 seconds
+2024-03-06 07:03:59,580 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26400.62 seconds
+2024-03-06 07:04:59,581 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26460.62 seconds
+2024-03-06 07:05:59,583 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26520.62 seconds
+2024-03-06 07:06:59,584 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26580.63 seconds
+2024-03-06 07:07:11,751 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 07:07:11,752 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 07:07:21,761 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 07:07:21,762 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 07:07:59,586 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26640.63 seconds
+2024-03-06 07:08:59,586 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26700.63 seconds
+2024-03-06 07:09:59,588 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26760.63 seconds
+2024-03-06 07:10:59,589 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26820.63 seconds
+2024-03-06 07:11:59,590 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26880.63 seconds
+2024-03-06 07:12:59,590 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 26940.63 seconds
+2024-03-06 07:13:59,592 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27000.63 seconds
+2024-03-06 07:14:59,593 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27060.64 seconds
+2024-03-06 07:15:59,594 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27120.64 seconds
+2024-03-06 07:16:59,595 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27180.64 seconds
+2024-03-06 07:17:59,596 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27240.64 seconds
+2024-03-06 07:18:59,598 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27300.64 seconds
+2024-03-06 07:19:59,599 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27360.64 seconds
+2024-03-06 07:20:59,601 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27420.64 seconds
+2024-03-06 07:21:59,603 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27480.65 seconds
+2024-03-06 07:22:12,705 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 07:22:12,706 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 07:22:22,720 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 07:22:22,721 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 07:22:59,605 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27540.65 seconds
+2024-03-06 07:23:59,606 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27600.65 seconds
+2024-03-06 07:24:59,607 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27660.65 seconds
+2024-03-06 07:25:59,609 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27720.65 seconds
+2024-03-06 07:26:59,610 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27780.65 seconds
+2024-03-06 07:27:59,611 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27840.65 seconds
+2024-03-06 07:28:59,613 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27900.65 seconds
+2024-03-06 07:29:59,614 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 27960.66 seconds
+2024-03-06 07:30:59,615 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28020.66 seconds
+2024-03-06 07:31:59,617 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28080.66 seconds
+2024-03-06 07:32:59,619 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28140.66 seconds
+2024-03-06 07:33:59,621 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28200.66 seconds
+2024-03-06 07:34:59,623 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28260.67 seconds
+2024-03-06 07:35:59,624 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28320.67 seconds
+2024-03-06 07:36:59,626 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28380.67 seconds
+2024-03-06 07:37:13,578 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 07:37:13,579 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 07:37:23,581 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 07:37:23,583 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 07:37:59,626 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28440.67 seconds
+2024-03-06 07:38:59,628 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28500.67 seconds
+2024-03-06 07:39:59,629 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28560.67 seconds
+2024-03-06 07:40:59,630 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28620.67 seconds
+2024-03-06 07:41:59,631 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28680.67 seconds
+2024-03-06 07:42:59,632 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28740.67 seconds
+2024-03-06 07:43:59,633 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28800.68 seconds
+2024-03-06 07:44:59,634 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28860.68 seconds
+2024-03-06 07:45:59,636 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28920.68 seconds
+2024-03-06 07:46:59,637 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 28980.68 seconds
+2024-03-06 07:47:59,638 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29040.68 seconds
+2024-03-06 07:48:59,639 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29100.68 seconds
+2024-03-06 07:49:59,641 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29160.68 seconds
+2024-03-06 07:50:59,643 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29220.69 seconds
+2024-03-06 07:51:59,644 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29280.69 seconds
+2024-03-06 07:52:14,573 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 07:52:14,573 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 07:52:24,584 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 07:52:24,584 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 07:52:59,645 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29340.69 seconds
+2024-03-06 07:53:59,646 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29400.69 seconds
+2024-03-06 07:54:59,647 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29460.69 seconds
+2024-03-06 07:55:59,648 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29520.69 seconds
+2024-03-06 07:56:59,650 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29580.69 seconds
+2024-03-06 07:57:59,651 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29640.69 seconds
+2024-03-06 07:58:59,652 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29700.69 seconds
+2024-03-06 07:59:59,653 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29760.70 seconds
+2024-03-06 08:00:59,655 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29820.70 seconds
+2024-03-06 08:01:59,657 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29880.70 seconds
+2024-03-06 08:02:59,658 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 29940.70 seconds
+2024-03-06 08:03:59,660 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30000.70 seconds
+2024-03-06 08:04:59,660 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30060.70 seconds
+2024-03-06 08:05:59,662 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30120.70 seconds
+2024-03-06 08:06:59,663 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30180.71 seconds
+2024-03-06 08:07:15,452 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 08:07:15,453 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 08:07:25,463 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 08:07:25,464 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 08:07:59,665 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30240.71 seconds
+2024-03-06 08:08:59,666 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30300.71 seconds
+2024-03-06 08:09:59,666 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30360.71 seconds
+2024-03-06 08:10:59,668 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30420.71 seconds
+2024-03-06 08:11:59,669 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30480.71 seconds
+2024-03-06 08:12:59,671 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30540.71 seconds
+2024-03-06 08:13:59,672 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30600.71 seconds
+2024-03-06 08:14:59,673 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30660.72 seconds
+2024-03-06 08:15:59,674 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30720.72 seconds
+2024-03-06 08:16:59,676 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30780.72 seconds
+2024-03-06 08:17:59,677 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30840.72 seconds
+2024-03-06 08:18:59,679 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30900.72 seconds
+2024-03-06 08:19:59,680 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 30960.72 seconds
+2024-03-06 08:20:59,681 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31020.72 seconds
+2024-03-06 08:21:59,683 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31080.73 seconds
+2024-03-06 08:22:16,386 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 08:22:16,388 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 08:22:26,388 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 08:22:26,388 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 08:22:59,684 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31140.73 seconds
+2024-03-06 08:23:59,685 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31200.73 seconds
+2024-03-06 08:24:59,688 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31260.73 seconds
+2024-03-06 08:25:59,689 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31320.73 seconds
+2024-03-06 08:26:59,690 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31380.73 seconds
+2024-03-06 08:27:59,691 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31440.73 seconds
+2024-03-06 08:28:59,693 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31500.73 seconds
+2024-03-06 08:29:59,694 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31560.74 seconds
+2024-03-06 08:30:59,695 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31620.74 seconds
+2024-03-06 08:31:59,696 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31680.74 seconds
+2024-03-06 08:32:59,698 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31740.74 seconds
+2024-03-06 08:33:59,699 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31800.74 seconds
+2024-03-06 08:34:59,700 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31860.74 seconds
+2024-03-06 08:35:59,701 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31920.74 seconds
+2024-03-06 08:36:59,703 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 31980.75 seconds
+2024-03-06 08:37:17,286 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 08:37:17,286 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 08:37:27,294 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 08:37:27,295 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 08:37:59,704 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32040.75 seconds
+2024-03-06 08:38:59,706 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32100.75 seconds
+2024-03-06 08:39:59,707 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32160.75 seconds
+2024-03-06 08:40:59,708 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32220.75 seconds
+2024-03-06 08:41:59,709 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32280.75 seconds
+2024-03-06 08:42:59,710 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32340.75 seconds
+2024-03-06 08:43:59,711 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32400.75 seconds
+2024-03-06 08:44:59,713 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32460.75 seconds
+2024-03-06 08:45:59,714 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32520.76 seconds
+2024-03-06 08:46:59,716 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32580.76 seconds
+2024-03-06 08:47:59,717 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32640.76 seconds
+2024-03-06 08:48:59,719 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32700.76 seconds
+2024-03-06 08:49:59,719 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32760.76 seconds
+2024-03-06 08:50:59,721 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32820.76 seconds
+2024-03-06 08:51:59,722 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32880.76 seconds
+2024-03-06 08:52:18,236 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 08:52:18,237 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 08:52:28,252 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 08:52:28,262 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 08:52:59,724 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 32940.77 seconds
+2024-03-06 08:53:59,724 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33000.77 seconds
+2024-03-06 08:54:59,726 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33060.77 seconds
+2024-03-06 08:55:59,726 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33120.77 seconds
+2024-03-06 08:56:59,728 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33180.77 seconds
+2024-03-06 08:57:59,728 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33240.77 seconds
+2024-03-06 08:58:59,730 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33300.77 seconds
+2024-03-06 08:59:59,731 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33360.77 seconds
+2024-03-06 09:00:59,732 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33420.77 seconds
+2024-03-06 09:01:59,734 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33480.78 seconds
+2024-03-06 09:02:59,736 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33540.78 seconds
+2024-03-06 09:03:59,737 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33600.78 seconds
+2024-03-06 09:04:59,738 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33660.78 seconds
+2024-03-06 09:05:59,739 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33720.78 seconds
+2024-03-06 09:06:59,741 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33780.78 seconds
+2024-03-06 09:07:19,108 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 09:07:19,108 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 09:07:29,118 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 09:07:29,119 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 09:07:59,742 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33840.78 seconds
+2024-03-06 09:08:59,744 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33900.79 seconds
+2024-03-06 09:09:59,745 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 33960.79 seconds
+2024-03-06 09:10:59,746 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34020.79 seconds
+2024-03-06 09:11:59,748 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34080.79 seconds
+2024-03-06 09:12:59,749 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34140.79 seconds
+2024-03-06 09:13:59,752 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34200.79 seconds
+2024-03-06 09:14:59,753 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34260.79 seconds
+2024-03-06 09:15:59,754 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34320.80 seconds
+2024-03-06 09:16:59,755 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34380.80 seconds
+2024-03-06 09:17:59,756 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34440.80 seconds
+2024-03-06 09:18:59,757 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34500.80 seconds
+2024-03-06 09:19:59,758 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34560.80 seconds
+2024-03-06 09:20:59,759 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34620.80 seconds
+2024-03-06 09:21:59,761 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34680.80 seconds
+2024-03-06 09:22:59,762 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34740.80 seconds
+2024-03-06 09:23:59,763 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34800.81 seconds
+2024-03-06 09:24:59,764 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34860.81 seconds
+2024-03-06 09:25:59,767 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34920.81 seconds
+2024-03-06 09:26:59,768 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 34980.81 seconds
+2024-03-06 09:27:59,769 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35040.81 seconds
+2024-03-06 09:28:59,770 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35100.81 seconds
+2024-03-06 09:29:59,771 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35160.81 seconds
+2024-03-06 09:30:59,774 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35220.82 seconds
+2024-03-06 09:31:59,775 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35280.82 seconds
+2024-03-06 09:32:59,777 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35340.82 seconds
+2024-03-06 09:33:59,779 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35400.82 seconds
+2024-03-06 09:34:59,780 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35460.82 seconds
+2024-03-06 09:35:59,782 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35520.82 seconds
+2024-03-06 09:36:59,784 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35580.83 seconds
+2024-03-06 09:37:59,784 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35640.83 seconds
+2024-03-06 09:38:59,786 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35700.83 seconds
+2024-03-06 09:39:59,787 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35760.83 seconds
+2024-03-06 09:40:59,788 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35820.83 seconds
+2024-03-06 09:41:59,789 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35880.83 seconds
+2024-03-06 09:42:59,791 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 35940.83 seconds
+2024-03-06 09:43:59,792 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36000.83 seconds
+2024-03-06 09:44:59,794 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36060.84 seconds
+2024-03-06 09:45:59,795 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36120.84 seconds
+2024-03-06 09:46:59,799 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36180.84 seconds
+2024-03-06 09:47:59,800 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36240.84 seconds
+2024-03-06 09:48:59,802 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36300.84 seconds
+2024-03-06 09:49:59,804 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36360.85 seconds
+2024-03-06 09:50:59,805 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36420.85 seconds
+2024-03-06 09:51:59,807 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36480.85 seconds
+2024-03-06 09:52:59,808 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36540.85 seconds
+2024-03-06 09:53:59,809 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36600.85 seconds
+2024-03-06 09:54:59,810 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36660.85 seconds
+2024-03-06 09:55:59,811 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36720.85 seconds
+2024-03-06 09:56:59,813 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36780.85 seconds
+2024-03-06 09:57:59,814 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36840.86 seconds
+2024-03-06 09:58:59,815 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36900.86 seconds
+2024-03-06 09:59:59,817 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 36960.86 seconds
+2024-03-06 10:00:59,818 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37020.86 seconds
+2024-03-06 10:01:59,819 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37080.86 seconds
+2024-03-06 10:02:59,820 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37140.86 seconds
+2024-03-06 10:03:59,822 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37200.86 seconds
+2024-03-06 10:04:59,822 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37260.86 seconds
+2024-03-06 10:05:59,823 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37320.87 seconds
+2024-03-06 10:06:59,824 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37380.87 seconds
+2024-03-06 10:07:59,827 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37440.87 seconds
+2024-03-06 10:08:59,828 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37500.87 seconds
+2024-03-06 10:09:59,829 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37560.87 seconds
+2024-03-06 10:10:59,830 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37620.87 seconds
+2024-03-06 10:11:59,832 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37680.87 seconds
+2024-03-06 10:12:59,833 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37740.88 seconds
+2024-03-06 10:13:59,836 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37800.88 seconds
+2024-03-06 10:14:59,837 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37860.88 seconds
+2024-03-06 10:15:59,838 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37920.88 seconds
+2024-03-06 10:16:59,840 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 37980.88 seconds
+2024-03-06 10:17:59,841 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38040.88 seconds
+2024-03-06 10:18:59,841 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38100.88 seconds
+2024-03-06 10:19:59,842 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38160.88 seconds
+2024-03-06 10:20:59,844 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38220.89 seconds
+2024-03-06 10:21:59,845 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38280.89 seconds
+2024-03-06 10:22:59,846 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38340.89 seconds
+2024-03-06 10:23:59,847 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38400.89 seconds
+2024-03-06 10:24:59,850 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38460.89 seconds
+2024-03-06 10:25:59,852 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38520.89 seconds
+2024-03-06 10:26:59,853 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38580.89 seconds
+2024-03-06 10:27:59,858 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38640.90 seconds
+2024-03-06 10:28:59,859 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38700.90 seconds
+2024-03-06 10:29:59,861 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38760.90 seconds
+2024-03-06 10:30:59,863 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38820.91 seconds
+2024-03-06 10:31:59,864 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38880.91 seconds
+2024-03-06 10:32:59,865 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 38940.91 seconds
+2024-03-06 10:33:59,867 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39000.91 seconds
+2024-03-06 10:34:59,868 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39060.91 seconds
+2024-03-06 10:35:59,870 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39120.91 seconds
+2024-03-06 10:36:59,872 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39180.91 seconds
+2024-03-06 10:37:14,517 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 10:37:14,518 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 10:37:24,543 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 10:37:24,544 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 10:37:59,873 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39240.92 seconds
+2024-03-06 10:38:59,874 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39300.92 seconds
+2024-03-06 10:39:59,875 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39360.92 seconds
+2024-03-06 10:40:59,876 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39420.92 seconds
+2024-03-06 10:41:59,877 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39480.92 seconds
+2024-03-06 10:42:59,879 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39540.92 seconds
+2024-03-06 10:43:59,880 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39600.92 seconds
+2024-03-06 10:44:59,881 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39660.92 seconds
+2024-03-06 10:45:59,882 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39720.92 seconds
+2024-03-06 10:46:59,883 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39780.93 seconds
+2024-03-06 10:47:59,884 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39840.93 seconds
+2024-03-06 10:48:59,886 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39900.93 seconds
+2024-03-06 10:49:59,890 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 39960.93 seconds
+2024-03-06 10:50:59,892 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40020.93 seconds
+2024-03-06 10:51:59,894 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40080.94 seconds
+2024-03-06 10:52:15,384 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 10:52:15,386 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 10:52:25,408 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 10:52:25,410 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 10:52:59,895 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40140.94 seconds
+2024-03-06 10:53:59,897 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40200.94 seconds
+2024-03-06 10:54:59,898 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40260.94 seconds
+2024-03-06 10:55:59,900 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40320.94 seconds
+2024-03-06 10:56:59,901 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40380.94 seconds
+2024-03-06 10:57:59,902 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40440.94 seconds
+2024-03-06 10:58:59,903 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40500.95 seconds
+2024-03-06 10:59:59,904 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40560.95 seconds
+2024-03-06 11:00:59,906 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40620.95 seconds
+2024-03-06 11:01:59,908 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40680.95 seconds
+2024-03-06 11:02:59,909 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40740.95 seconds
+2024-03-06 11:03:59,910 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40800.95 seconds
+2024-03-06 11:04:59,912 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40860.95 seconds
+2024-03-06 11:05:59,913 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40920.96 seconds
+2024-03-06 11:06:59,914 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 40980.96 seconds
+2024-03-06 11:07:16,286 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 11:07:16,287 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 11:07:26,316 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 11:07:26,319 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 11:07:59,915 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41040.96 seconds
+2024-03-06 11:08:59,916 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41100.96 seconds
+2024-03-06 11:09:59,917 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41160.96 seconds
+2024-03-06 11:10:59,919 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41220.96 seconds
+2024-03-06 11:11:59,920 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41280.96 seconds
+2024-03-06 11:12:59,922 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41340.96 seconds
+2024-03-06 11:13:59,923 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41400.97 seconds
+2024-03-06 11:14:59,924 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41460.97 seconds
+2024-03-06 11:15:59,926 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41520.97 seconds
+2024-03-06 11:16:59,927 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41580.97 seconds
+2024-03-06 11:17:59,928 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41640.97 seconds
+2024-03-06 11:18:59,929 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41700.97 seconds
+2024-03-06 11:19:59,930 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41760.97 seconds
+2024-03-06 11:20:59,932 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41820.97 seconds
+2024-03-06 11:21:59,933 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41880.98 seconds
+2024-03-06 11:22:59,934 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 41940.98 seconds
+2024-03-06 11:23:59,935 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42000.98 seconds
+2024-03-06 11:24:59,936 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42060.98 seconds
+2024-03-06 11:25:59,937 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42120.98 seconds
+2024-03-06 11:26:59,939 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42180.98 seconds
+2024-03-06 11:27:59,940 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42240.98 seconds
+2024-03-06 11:28:59,943 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42300.98 seconds
+2024-03-06 11:29:59,943 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42360.99 seconds
+2024-03-06 11:30:59,945 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42420.99 seconds
+2024-03-06 11:31:59,946 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42480.99 seconds
+2024-03-06 11:32:59,948 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42540.99 seconds
+2024-03-06 11:33:59,949 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42600.99 seconds
+2024-03-06 11:34:59,950 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42660.99 seconds
+2024-03-06 11:35:59,951 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42720.99 seconds
+2024-03-06 11:36:59,952 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42780.99 seconds
+2024-03-06 11:37:18,111 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 11:37:18,111 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 11:37:28,120 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 11:37:28,121 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 11:37:59,953 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42841.00 seconds
+2024-03-06 11:38:59,954 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42901.00 seconds
+2024-03-06 11:39:59,956 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 42961.00 seconds
+2024-03-06 11:40:59,956 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43021.00 seconds
+2024-03-06 11:41:59,957 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43081.00 seconds
+2024-03-06 11:42:59,959 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43141.00 seconds
+2024-03-06 11:43:59,960 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43201.00 seconds
+2024-03-06 11:44:59,962 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43261.00 seconds
+2024-03-06 11:45:59,963 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43321.01 seconds
+2024-03-06 11:46:59,965 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43381.01 seconds
+2024-03-06 11:47:59,966 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43441.01 seconds
+2024-03-06 11:48:59,968 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43501.01 seconds
+2024-03-06 11:49:59,969 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43561.01 seconds
+2024-03-06 11:50:59,970 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43621.01 seconds
+2024-03-06 11:51:59,971 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43681.01 seconds
+2024-03-06 11:52:19,004 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 11:52:19,006 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 11:52:29,012 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 11:52:29,013 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 11:52:59,972 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43741.01 seconds
+2024-03-06 11:53:59,973 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43801.01 seconds
+2024-03-06 11:54:59,974 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43861.02 seconds
+2024-03-06 11:55:59,976 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43921.02 seconds
+2024-03-06 11:56:59,977 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 43981.02 seconds
+2024-03-06 11:57:59,978 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 44041.02 seconds
+2024-03-06 11:58:59,980 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 44101.02 seconds
+2024-03-06 11:59:59,984 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 44161.03 seconds
+2024-03-06 12:00:59,985 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 44221.03 seconds
+2024-03-06 12:10:21,305 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 12:10:22,563 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 12:10:24,892 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 127.0.0.1
+2024-03-06 12:10:28,467 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 12:10:30,866 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 12:10:30,868 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 12:10:31,124 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 12:10:31,396 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 12:10:32,150 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 12:10:54,399 [websockets.py:write_to_socket()] - Websocket closed while writing: 548035321808
+2024-03-06 12:10:58,737 [websockets.py:on_close()] - Websocket Closed: ID: 548035321808 Close Code: None, Close Reason: None, Pong Time Elapsed: 44.94
+2024-03-06 12:11:32,693 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 192.168.1.91
+2024-03-06 12:11:32,848 [application.py:log_request()] - 101 GET /websocket?token=ROOWFRDVSYLYMOIQ46BT7ZS4LHXHZ3PI (192.168.1.91) [_TRUSTED_USER_] 1.37ms
+2024-03-06 12:11:32,849 [websockets.py:open()] - Websocket Opened: ID: 548035960080, Proxied: True, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36, Host Name: 192.168.1.5
+2024-03-06 12:11:32,885 [websockets.py:_handle_identify()] - Websocket 548035960080 Client Identified - Name: fluidd, Version: 1.28.1-d1ef3a4, Type: web
+2024-03-06 12:11:32,886 [file_manager.py:get_file_list()] - Updating File List <config>...
+2024-03-06 12:12:17,604 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:12:49,757 [klippy_connection.py:wait()] - Request 'info' pending: 60.00 seconds
+2024-03-06 12:12:49,781 [klippy_connection.py:wait()] - Request 'objects/list' pending: 60.00 seconds
+2024-03-06 12:13:17,607 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.01 seconds
+2024-03-06 12:17:56,702 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.gcode.script, Code: 400, Message: Must home axis first: 14.466 3.868 1.156 [0.000]
+2024-03-06 12:18:05,251 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.gcode.script, Code: 400, Message: No trigger on x after full movement
+2024-03-06 12:18:18,818 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 12:18:19,021 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.info, Code: 503, Message: Klippy Host not connected
+2024-03-06 12:18:20,076 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 12:18:28,456 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 12:18:28,459 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 12:18:28,547 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 12:18:28,709 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 12:18:29,008 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 12:18:29,462 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 12:20:48,784 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:21:48,786 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:21:55,848 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:22:14,595 [klippy_connection.py:_process_status_update()] - Klippy has shutdown
+2024-03-06 12:22:14,599 [proc_stats.py:_handle_shutdown()] - 
+Moonraker System Usage Statistics:
+System Time: 1709727704.647995, Usage: 1.54%, Memory: 61904 kB
+System Time: 1709727705.650848, Usage: 1.56%, Memory: 61904 kB
+System Time: 1709727706.651166, Usage: 1.75%, Memory: 61904 kB
+System Time: 1709727707.650510, Usage: 1.56%, Memory: 61904 kB
+System Time: 1709727708.659202, Usage: 1.41%, Memory: 61904 kB
+System Time: 1709727709.657840, Usage: 1.83%, Memory: 61904 kB
+System Time: 1709727710.662247, Usage: 2.53%, Memory: 61904 kB
+System Time: 1709727711.661247, Usage: 2.93%, Memory: 61904 kB
+System Time: 1709727712.661619, Usage: 4.09%, Memory: 61904 kB
+System Time: 1709727713.669078, Usage: 2.96%, Memory: 61904 kB
+System Time: 1709727714.666355, Usage: 2.24%, Memory: 61904 kB
+System Time: 1709727715.671611, Usage: 2.41%, Memory: 61904 kB
+System Time: 1709727716.667822, Usage: 3.09%, Memory: 61904 kB
+System Time: 1709727717.673357, Usage: 2.35%, Memory: 61904 kB
+System Time: 1709727718.673512, Usage: 2.47%, Memory: 61904 kB
+System Time: 1709727719.682238, Usage: 2.56%, Memory: 61904 kB
+System Time: 1709727720.675961, Usage: 2.52%, Memory: 61904 kB
+System Time: 1709727721.676933, Usage: 2.9%, Memory: 61904 kB
+System Time: 1709727722.668233, Usage: 4.75%, Memory: 61904 kB
+System Time: 1709727723.680035, Usage: 1.97%, Memory: 61904 kB
+System Time: 1709727724.672394, Usage: 2.41%, Memory: 61904 kB
+System Time: 1709727725.684947, Usage: 1.36%, Memory: 61904 kB
+System Time: 1709727726.676487, Usage: 2.85%, Memory: 61904 kB
+System Time: 1709727727.687942, Usage: 1.46%, Memory: 61904 kB
+System Time: 1709727728.680877, Usage: 2.38%, Memory: 61904 kB
+System Time: 1709727729.693165, Usage: 1.25%, Memory: 61904 kB
+System Time: 1709727730.685057, Usage: 2.39%, Memory: 61904 kB
+System Time: 1709727731.695151, Usage: 72.64%, Memory: 62828 kB
+System Time: 1709727732.687726, Usage: 2.14%, Memory: 62828 kB
+System Time: 1709727733.687886, Usage: 1.97%, Memory: 62828 kB
+CPU Temperature: 54.043
+2024-03-06 12:22:14,600 [proc_stats.py:_handle_shutdown()] - Throttled Flags: 
+2024-03-06 12:22:55,849 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:23:55,851 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:24:55,854 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.01 seconds
+2024-03-06 12:25:55,855 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 300.01 seconds
+2024-03-06 12:26:55,857 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 360.01 seconds
+2024-03-06 12:27:55,857 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 420.01 seconds
+2024-03-06 12:28:55,859 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 480.01 seconds
+2024-03-06 12:29:55,861 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 540.01 seconds
+2024-03-06 12:30:55,863 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 600.02 seconds
+2024-03-06 12:31:55,864 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 660.02 seconds
+2024-03-06 12:32:55,865 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 720.02 seconds
+2024-03-06 12:33:55,866 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 780.02 seconds
+2024-03-06 12:34:55,868 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 840.02 seconds
+2024-03-06 12:35:55,869 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 900.02 seconds
+2024-03-06 12:36:55,870 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 960.02 seconds
+2024-03-06 12:37:55,871 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1020.02 seconds
+2024-03-06 12:38:55,873 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1080.03 seconds
+2024-03-06 12:39:55,874 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1140.03 seconds
+2024-03-06 12:40:55,875 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1200.03 seconds
+2024-03-06 12:41:55,877 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1260.03 seconds
+2024-03-06 12:42:22,908 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:42:28,593 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:42:30,219 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:42:31,619 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:42:33,291 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:42:55,878 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1320.03 seconds
+2024-03-06 12:43:22,909 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:43:28,594 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:43:30,221 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:43:31,620 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:43:33,293 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:43:55,879 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1380.03 seconds
+2024-03-06 12:44:06,890 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 12:44:16,861 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:44:22,911 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:44:25,521 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:44:28,595 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:44:30,222 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:44:31,622 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:44:33,295 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 12:44:40,514 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:44:55,881 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1440.03 seconds
+2024-03-06 12:44:58,165 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:45:03,485 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:45:16,818 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:45:16,863 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:45:22,912 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.00 seconds
+2024-03-06 12:45:25,522 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:45:25,805 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 12:45:28,596 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.00 seconds
+2024-03-06 12:45:30,223 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.01 seconds
+2024-03-06 12:45:31,623 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.01 seconds
+2024-03-06 12:45:33,296 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.01 seconds
+2024-03-06 12:45:40,515 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 12:45:48,793 [klippy_connection.py:close()] - Error closing Klippy Unix Socket
+Traceback (most recent call last):
+  File "/home/pi/moonraker/moonraker/components/klippy_connection.py", line 769, in close
+    await self.writer.wait_closed()
+  File "/usr/lib/python3.11/asyncio/streams.py", line 350, in wait_closed
+    await self._protocol._get_close_waiter(self)
+  File "/usr/lib/python3.11/asyncio/selector_events.py", line 995, in _read_ready__data_received
+    data = self._sock.recv(self.max_size)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+2024-03-06 12:45:48,843 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 12:45:48,878 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.gcode.script, Code: 503, Message: Klippy Disconnected
+2024-03-06 12:45:48,885 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.info, Code: 503, Message: Klippy Disconnected
+2024-03-06 12:45:48,945 [websockets.py:write_to_socket()] - Websocket closed while writing: 548035465040
+2024-03-06 12:45:48,946 [websockets.py:on_close()] - Websocket Closed: ID: 548035465040 Close Code: None, Close Reason: None, Pong Time Elapsed: 3.02
+2024-03-06 12:45:48,952 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.info, Code: 503, Message: Klippy Host not connected
+2024-03-06 12:45:49,253 [server.py:_handle_term_signal()] - Exiting with signal SIGTERM
+2024-03-06 12:45:49,361 [websockets.py:on_close()] - Websocket Closed: ID: 547725389072 Close Code: 1001, Close Reason: Server Shutdown, Pong Time Elapsed: 8.12
+2024-03-06 12:45:49,381 [websockets.py:on_close()] - Websocket Closed: ID: 548035960080 Close Code: 1001, Close Reason: Server Shutdown, Pong Time Elapsed: 6.51
+2024-03-06 12:45:49,387 [database.py:close()] - Database statistics:
+
+announcements:
+psize: 4096
+depth: 0
+branch_pages: 0
+leaf_pages: 0
+overflow_pages: 0
+entries: 0
+authorized_users:
+psize: 4096
+depth: 1
+branch_pages: 0
+leaf_pages: 1
+overflow_pages: 0
+entries: 1
+fluidd:
+psize: 4096
+depth: 1
+branch_pages: 0
+leaf_pages: 1
+overflow_pages: 1
+entries: 6
+gcode_metadata:
+psize: 4096
+depth: 2
+branch_pages: 1
+leaf_pages: 5
+overflow_pages: 0
+entries: 22
+history:
+psize: 4096
+depth: 0
+branch_pages: 0
+leaf_pages: 0
+overflow_pages: 0
+entries: 0
+mainsail:
+psize: 4096
+depth: 1
+branch_pages: 0
+leaf_pages: 1
+overflow_pages: 1
+entries: 9
+mobileraker:
+psize: 4096
+depth: 1
+branch_pages: 0
+leaf_pages: 1
+overflow_pages: 0
+entries: 1
+moonraker:
+psize: 4096
+depth: 1
+branch_pages: 0
+leaf_pages: 1
+overflow_pages: 0
+entries: 8
+update_manager:
+psize: 4096
+depth: 2
+branch_pages: 1
+leaf_pages: 5
+overflow_pages: 0
+entries: 10
+2024-03-06 12:45:49,461 [server.py:main()] - Server Shutdown
+-------------------- Log Start | Wed Mar  6 12:48:09 2024 --------------------
+data_path: /home/pi/printer_data
+is_default_data_path: False
+config_file: /home/pi/printer_data/config/moonraker.conf
+startup_warnings: []
+verbose: False
+debug: False
+asyncio_debug: False
+is_backup_config: False
+is_python_package: False
+instance_uuid: 7bbe8f17ffe04b30874e3e7604f1c19c
+unix_socket_path: /home/pi/printer_data/comms/moonraker.sock
+software_version: v0.8.0-319-gf0ae517
+git_branch: master
+git_remote: origin
+git_repo_url: https://github.com/Arksine/moonraker.git
+modified_files: []
+unofficial_components: []
+log_file: /home/pi/printer_data/logs/moonraker.log
+python_version: 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0]
+launch_args: /home/pi/moonraker-env/bin/python /home/pi/moonraker/moonraker/moonraker.py -d /home/pi/printer_data
+msgspec_enabled: False
+uvloop_enabled: False
+2024-03-06 12:48:09,539 [confighelper.py:read_file()] - Configuration File '/home/pi/printer_data/config/moonraker.conf' parsed, total size: 3106 B
+2024-03-06 12:48:09,542 [server.py:add_log_rollover_item()] - 
+#################### Moonraker Configuration ####################
+
+[server]
+host = 0.0.0.0
+port = 7125
+max_upload_size = 1024
+klippy_uds_address = ~/printer_data/comms/klippy.sock
+
+[file_manager]
+enable_object_processing = False
+
+[authorization]
+cors_domains = 
+	https://my.mainsail.xyz
+	http://my.mainsail.xyz
+	http://*.local
+	http://*.lan
+trusted_clients = 
+	10.0.0.0/8
+	127.0.0.0/8
+	169.254.0.0/16
+	172.16.0.0/12
+	192.168.0.0/16
+	FE80::/10
+	::1/128
+
+[octoprint_compat]
+
+[history]
+
+[announcements]
+subscriptions = 
+	mainsail
+
+[update_manager]
+refresh_interval = 168
+enable_auto_refresh = True
+
+[update_manager mainsail]
+type = web
+channel = stable
+repo = mainsail-crew/mainsail
+path = ~/mainsail
+
+[update_manager mainsail-config]
+type = git_repo
+primary_branch = master
+path = ~/mainsail-config
+origin = https://github.com/mainsail-crew/mainsail-config.git
+managed_services = klipper
+
+[update_manager crowsnest]
+type = git_repo
+path = ~/crowsnest
+origin = https://github.com/mainsail-crew/crowsnest.git
+managed_services = crowsnest
+install_script = tools/pkglist.sh
+
+[update_manager sonar]
+type = git_repo
+path = ~/sonar
+origin = https://github.com/mainsail-crew/sonar.git
+primary_branch = main
+managed_services = sonar
+install_script = tools/install.sh
+
+[update_manager fluidd-config]
+type = git_repo
+primary_branch = master
+path = ~/fluidd-config
+origin = https://github.com/fluidd-core/fluidd-config.git
+managed_services = klipper
+
+[update_manager fluidd]
+type = web
+channel = stable
+repo = fluidd-core/fluidd
+path = ~/fluidd
+
+[update_manager beacon]
+type = git_repo
+channel = dev
+path = ~/beacon_klipper
+origin = https://github.com/beacon3d/beacon_klipper.git
+env = ~/klippy-env/bin/python
+requirements = requirements.txt
+install_script = install.sh
+is_system_service = False
+managed_services = klipper
+info_tags = 
+	desc=Beacon Surface Scanner
+
+#################################################################
+All Configuration Files:
+/home/pi/printer_data/config/moonraker.conf
+#################################################################
+2024-03-06 12:48:09,748 [server.py:load_component()] - Component (secrets) loaded
+2024-03-06 12:48:09,760 [server.py:load_component()] - Component (template) loaded
+2024-03-06 12:48:09,771 [server.py:load_component()] - Component (klippy_connection) loaded
+2024-03-06 12:48:10,558 [server.py:load_component()] - Component (application) loaded
+2024-03-06 12:48:10,588 [server.py:load_component()] - Component (websockets) loaded
+2024-03-06 12:48:10,664 [server.py:load_component()] - Component (dbus_manager) loaded
+2024-03-06 12:48:10,679 [server.py:add_log_rollover_item()] - 
+Database Versions: pylmdb = 1.4.1, lmdb = (0, 9, 29)
+Unsafe Shutdown Count: 7
+2024-03-06 12:48:10,684 [server.py:load_component()] - Component (database) loaded
+2024-03-06 12:48:10,705 [file_manager.py:__init__()] - Using File System Observer: inotify
+2024-03-06 12:48:10,726 [server.py:load_component()] - Component (file_manager) loaded
+2024-03-06 12:48:10,749 [authorization.py:__init__()] - Authorization Configuration Loaded
+Trusted Clients:
+10.0.0.0/8
+127.0.0.0/8
+169.254.0.0/16
+172.16.0.0/12
+192.168.0.0/16
+fe80::/10
+::1/128
+CORS Domains:
+https://my\.mainsail\.xyz
+http://my\.mainsail\.xyz
+http://.*\.local
+http://.*\.lan
+2024-03-06 12:48:10,752 [server.py:load_component()] - Component (authorization) loaded
+2024-03-06 12:48:10,759 [server.py:load_component()] - Component (klippy_apis) loaded
+2024-03-06 12:48:10,864 [server.py:add_log_rollover_item()] - 
+System Info:
+
+***python***
+  version: (3, 11, 2, 'final', 0)
+  version_string: 3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0]
+
+***cpu_info***
+  cpu_count: 4
+  bits: 64bit
+  processor: aarch64
+  cpu_desc: 
+  serial_number: 100000004537b071
+  hardware_desc: BCM2835
+  model: Raspberry Pi 4 Model B Rev 1.1
+  total_memory: 3704496
+  memory_units: kB
+
+***sd_info***
+
+***distribution***
+  name: Debian GNU/Linux 12 (bookworm)
+  id: debian
+  version: 12
+  version_parts: {'major': '12', 'minor': '', 'build_number': ''}
+  like: 
+  codename: bookworm
+  release_info: {'name': 'MainsailOS', 'version_id': '1.2.1', 'codename': 'bullseye', 'id': 'mainsailos'}
+
+***virtualization***
+  virt_type: none
+  virt_identifier: none
+
+***network***
+
+***canbus***
+
+***Allowed Services***
+  klipper_mcu
+  webcamd
+  MoonCord
+  KlipperScreen
+  moonraker-telegram-bot
+  moonraker-obico
+  sonar
+  crowsnest
+  octoeverywhere
+  ratos-configurator
+  mobileraker
+2024-03-06 12:48:10,870 [server.py:load_component()] - Component (shell_command) loaded
+2024-03-06 12:48:10,871 [machine.py:__init__()] - Using System Provider: systemd_dbus
+2024-03-06 12:48:10,883 [server.py:add_log_rollover_item()] - Module libcamera unavailble, import failed
+2024-03-06 12:48:10,883 [server.py:load_component()] - Component (machine) loaded
+2024-03-06 12:48:10,887 [server.py:load_component()] - Component (data_store) loaded
+2024-03-06 12:48:10,889 [proc_stats.py:__init__()] - Detected 'vcgencmd', throttle checking enabled
+2024-03-06 12:48:10,891 [server.py:load_component()] - Component (proc_stats) loaded
+2024-03-06 12:48:10,893 [server.py:load_component()] - Component (job_state) loaded
+2024-03-06 12:48:10,897 [server.py:load_component()] - Component (job_queue) loaded
+2024-03-06 12:48:10,907 [server.py:load_component()] - Component (http_client) loaded
+2024-03-06 12:48:10,912 [server.py:load_component()] - Component (announcements) loaded
+2024-03-06 12:48:10,916 [server.py:load_component()] - Component (webcam) loaded
+2024-03-06 12:48:10,920 [server.py:load_component()] - Component (extensions) loaded
+2024-03-06 12:48:10,926 [server.py:load_component()] - Component (octoprint_compat) loaded
+2024-03-06 12:48:10,986 [base_deploy.py:log_info()] - Git Repo moonraker: Detected virtualenv: /home/pi/moonraker-env
+2024-03-06 12:48:10,990 [base_deploy.py:log_info()] - Git Repo klipper: Detected virtualenv: /home/pi/klippy-env
+2024-03-06 12:48:11,005 [base_deploy.py:log_info()] - Git Repo beacon: Option 'env' is deprecated, use 'virtualenv' instead.
+2024-03-06 12:48:11,007 [base_deploy.py:log_info()] - Git Repo beacon: Detected virtualenv: /home/pi/klippy-env
+2024-03-06 12:48:11,012 [server.py:load_component()] - Component (update_manager) loaded
+2024-03-06 12:48:11,017 [server.py:load_component()] - Component (history) loaded
+2024-03-06 12:48:11,018 [server.py:_initialize_component()] - Performing Component Post Init: [dbus_manager]
+2024-03-06 12:48:11,136 [server.py:_initialize_component()] - Performing Component Post Init: [file_manager]
+2024-03-06 12:48:11,194 [server.py:_initialize_component()] - Performing Component Post Init: [authorization]
+2024-03-06 12:48:11,195 [server.py:_initialize_component()] - Performing Component Post Init: [machine]
+2024-03-06 12:48:11,197 [machine.py:validation_init()] - Installation version in database up to date
+2024-03-06 12:48:11,694 [machine.py:check_virt_status()] - No Virtualization Detected
+2024-03-06 12:48:11,702 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 12:48:11,704 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 12:48:11,757 [server.py:add_log_rollover_item()] - 
+Systemd unit moonraker.service:
+unit_name: moonraker.service
+is_default: True
+manager: systemd
+Properties:
+**Requires=['sysinit.target', '-.mount', 'system.slice', 'network-online.target']
+**After=['sysinit.target', 'network-online.target', 'basic.target', 'systemd-journald.socket', 'system.slice', '-.mount']
+**SupplementaryGroups=['moonraker-admin']
+**EnvironmentFiles=/home/pi/printer_data/systemd/moonraker.env
+**ExecStart=/home/pi/moonraker-env/bin/python $MOONRAKER_ARGS
+**WorkingDirectory=/home/pi/moonraker
+**FragmentPath=/etc/systemd/system/moonraker.service
+**Description=API Server for Klipper SV1
+**User=pi
+2024-03-06 12:48:11,758 [server.py:_initialize_component()] - Performing Component Post Init: [proc_stats]
+2024-03-06 12:48:11,758 [server.py:_initialize_component()] - Performing Component Post Init: [announcements]
+2024-03-06 12:48:11,759 [server.py:_initialize_component()] - Performing Component Post Init: [webcam]
+2024-03-06 12:48:11,759 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 12:48:11,759 [server.py:_initialize_component()] - Performing Component Post Init: [klippy_connection]
+2024-03-06 12:48:11,759 [server.py:add_log_rollover_item()] - 
+Systemd unit klipper.service:
+unit_name: klipper.service
+is_default: True
+manager: systemd
+Properties:
+**Requires=['sysinit.target', '-.mount', 'system.slice']
+**After=['sysinit.target', 'basic.target', 'network-online.target', '-.mount', 'system.slice', 'systemd-journald.socket']
+**SupplementaryGroups=[]
+**EnvironmentFiles=/home/pi/printer_data/systemd/klipper.env
+**ExecStart=/home/pi/klippy-env/bin/python $KLIPPER_ARGS
+**WorkingDirectory=/home/pi/klipper
+**FragmentPath=/etc/systemd/system/klipper.service
+**Description=Klipper 3D Printer Firmware SV1
+**User=pi
+2024-03-06 12:48:11,759 [server.py:_initialize_component()] - Performing Component Post Init: [update_manager]
+2024-03-06 12:48:11,761 [server.py:_initialize_component()] - Performing Component Post Init: [history]
+2024-03-06 12:48:12,160 [base_deploy.py:log_info()] - PackageDeploy: PackageKit Provider Configured
+2024-03-06 12:48:12,677 [git_deploy.py:log_repo_info()] - Git Repo moonraker Detected:
+Owner: Arksine
+Repository Name: moonraker
+Path: /home/pi/moonraker
+Remote: origin
+Branch: master
+Remote URL: https://github.com/Arksine/moonraker.git
+Recovery URL: https://github.com/Arksine/moonraker.git
+Current Commit SHA: f0ae51792fd3d1b9c1141548bd61f5e0ec36f410
+Upstream Commit SHA: f0ae51792fd3d1b9c1141548bd61f5e0ec36f410
+Current Version: v0.8.0-319-gf0ae5179
+Upstream Version: v0.8.0-319-gf0ae5179
+Rollback Commit: 348b7f521facd981df058c5ecf1df682da3141f5
+Rollback Branch: master
+Rollback Version: v0.8.0-41-g348b7f5
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 0
+Diverged: False
+2024-03-06 12:48:13,197 [git_deploy.py:log_repo_info()] - Git Repo klipper Detected:
+Owner: Klipper3d
+Repository Name: klipper
+Path: /home/pi/klipper
+Remote: origin
+Branch: master
+Remote URL: https://github.com/Klipper3d/klipper
+Recovery URL: https://github.com/Klipper3d/klipper
+Current Commit SHA: b98375b360b45a92b2281005877ed7255d080a0c
+Upstream Commit SHA: 31de734d193dca3395803f7bd146476688547ebe
+Current Version: v0.12.0-115-gb98375b3-dirty
+Upstream Version: v0.12.0-116-g31de734d
+Rollback Commit: 5f0d252b408ef0cd182367ba4cc224b8d105f0ec
+Rollback Branch: master
+Rollback Version: v0.11.0-205-g5f0d252b
+Is Dirty: True
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 1
+Diverged: False
+Repo Warnings:
+  Repo is dirty.  Detected the following modifed files: ['docs/Bed_Mesh.md', 'src/generic/armcm_timer.c', 'src/sched.c']
+2024-03-06 12:48:13,211 [base_deploy.py:log_info()] - Web Client mainsail: Detected
+Repo: mainsail-crew/mainsail
+Channel: stable
+Path: /home/pi/mainsail
+Local Version: v2.10.0
+Remote Version: v2.10.0
+Valid: True
+Fallback Detected: False
+Pre-release: False
+Download Url: https://github.com/mainsail-crew/mainsail/releases/download/v2.10.0/mainsail.zip
+Download Size: 2081565
+Content Type: application/zip
+Rollback Version: v2.9.1
+Rollback Repo: mainsail-crew/mainsail
+2024-03-06 12:48:13,728 [git_deploy.py:log_repo_info()] - Git Repo mainsail-config Detected:
+Owner: mainsail-crew
+Repository Name: mainsail-config
+Path: /home/pi/mainsail-config
+Remote: origin
+Branch: master
+Remote URL: https://github.com/mainsail-crew/mainsail-config.git
+Recovery URL: https://github.com/mainsail-crew/mainsail-config.git
+Current Commit SHA: e57810d51b5c634aadaca4db923bfcba269ae4b3
+Upstream Commit SHA: e57810d51b5c634aadaca4db923bfcba269ae4b3
+Current Version: v1.2.1-0-ge57810d5
+Upstream Version: v1.2.1-0-ge57810d5
+Rollback Commit: e4976f616e2c779218cdb0c60d2b967c917b6ec4
+Rollback Branch: master
+Rollback Version: v1.0.0-11-ge4976f6
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 0
+Diverged: False
+2024-03-06 12:48:14,246 [git_deploy.py:log_repo_info()] - Git Repo crowsnest Detected:
+Owner: mainsail-crew
+Repository Name: crowsnest
+Path: /home/pi/crowsnest
+Remote: origin
+Branch: master
+Remote URL: https://github.com/mainsail-crew/crowsnest.git
+Recovery URL: https://github.com/mainsail-crew/crowsnest.git
+Current Commit SHA: b0709702f677ffde1f102db08ad79371f6c95165
+Upstream Commit SHA: e96cd46ffb4a42ae1fbf23118caa68dd0dac0597
+Current Version: v4.1.5-1-gb0709702
+Upstream Version: v4.1.6-1-ge96cd46f
+Rollback Commit: c0c9c418c8e7d6158bfd7bb51a184ab20b77d075
+Rollback Branch: master
+Rollback Version: v4.1.3-1-gc0c9c418
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 4
+Diverged: False
+2024-03-06 12:48:14,761 [git_deploy.py:log_repo_info()] - Git Repo sonar Detected:
+Owner: mainsail-crew
+Repository Name: sonar
+Path: /home/pi/sonar
+Remote: origin
+Branch: main
+Remote URL: https://github.com/mainsail-crew/sonar.git
+Recovery URL: https://github.com/mainsail-crew/sonar.git
+Current Commit SHA: eacc498a52f79292063b6f9b0e0c191c34c5dc09
+Upstream Commit SHA: eacc498a52f79292063b6f9b0e0c191c34c5dc09
+Current Version: v0.1.3-1-geacc498a
+Upstream Version: v0.1.3-1-geacc498a
+Rollback Commit: 7962a1225ad88fa2a642ae2b378637491b4b2710
+Rollback Branch: main
+Rollback Version: v0.1.2-0-g7962a12
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 0
+Diverged: False
+2024-03-06 12:48:15,280 [git_deploy.py:log_repo_info()] - Git Repo fluidd-config Detected:
+Owner: fluidd-core
+Repository Name: fluidd-config
+Path: /home/pi/fluidd-config
+Remote: origin
+Branch: master
+Remote URL: https://github.com/fluidd-core/fluidd-config.git
+Recovery URL: https://github.com/fluidd-core/fluidd-config.git
+Current Commit SHA: ce48c5854e9ca3ca72b63d0327069fac20e94c7c
+Upstream Commit SHA: ce48c5854e9ca3ca72b63d0327069fac20e94c7c
+Current Version: v1.2.0-0-gce48c585
+Upstream Version: v1.2.0-0-gce48c585
+Rollback Commit: ce48c5854e9ca3ca72b63d0327069fac20e94c7c
+Rollback Branch: master
+Rollback Version: v0.0.0-11-gce48c585-inferred
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 0
+Diverged: False
+2024-03-06 12:48:15,284 [base_deploy.py:log_info()] - Web Client fluidd: Detected
+Repo: fluidd-core/fluidd
+Channel: stable
+Path: /home/pi/fluidd
+Local Version: v1.28.1
+Remote Version: v1.28.1
+Valid: True
+Fallback Detected: False
+Pre-release: False
+Download Url: https://github.com/fluidd-core/fluidd/releases/download/v1.28.1/fluidd.zip
+Download Size: 3638824
+Content Type: application/zip
+Rollback Version: v1.27.1
+Rollback Repo: fluidd-core/fluidd
+2024-03-06 12:48:15,802 [git_deploy.py:log_repo_info()] - Git Repo beacon Detected:
+Owner: beacon3d
+Repository Name: beacon_klipper
+Path: /home/pi/beacon_klipper
+Remote: origin
+Branch: master
+Remote URL: https://github.com/beacon3d/beacon_klipper.git
+Recovery URL: https://github.com/beacon3d/beacon_klipper.git
+Current Commit SHA: 1e7511cad7f289dff193f077b490e668791877ac
+Upstream Commit SHA: 1e7511cad7f289dff193f077b490e668791877ac
+Current Version: v1.0.0-27-g1e7511ca
+Upstream Version: v1.0.0-27-g1e7511ca
+Rollback Commit: afcd4e98f257413aea2c14a48ffee0a0c7dc402b
+Rollback Branch: master
+Rollback Version: v1.0.0-17-gafcd4e98
+Is Dirty: False
+Is Detached: False
+Is Shallow: False
+Commits Behind Count: 0
+Diverged: False
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - PackageKit: Next refresh in: 2 Days, 15 Hours, 9 Minutes, 57 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo moonraker: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 45 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo klipper: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 46 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Web Client mainsail: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 46 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo mainsail-config: Next refresh in: 2 Days, 15 Hours, 9 Minutes, 58 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo crowsnest: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 47 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo sonar: Next refresh in: 2 Days, 15 Hours, 9 Minutes, 58 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo fluidd-config: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 48 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Web Client fluidd: Next refresh in: 5 Days, 13 Hours, 30 Minutes, 48 Seconds
+2024-03-06 12:48:15,804 [base_deploy.py:log_info()] - Git Repo beacon: Next refresh in: 4 Days, 12 Hours, 30 Minutes, 45 Seconds
+2024-03-06 12:48:15,808 [extensions.py:start_unix_server()] - Creating Unix Domain Socket at '/home/pi/printer_data/comms/moonraker.sock'
+2024-03-06 12:48:15,809 [server.py:start_server()] - Starting Moonraker on (0.0.0.0, 7125), Hostname: mainsailos
+2024-03-06 12:48:15,810 [application.py:listen()] - SSL Certificate/Key not configured, aborting HTTPS Server startup
+2024-03-06 12:48:16,062 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 12:48:16,118 [server.py:add_log_rollover_item()] - 
+Systemd unit klipper.service:
+unit_name: klipper.service
+is_default: True
+manager: systemd
+Properties:
+**Requires=['-.mount', 'sysinit.target', 'system.slice']
+**After=['basic.target', '-.mount', 'systemd-journald.socket', 'sysinit.target', 'system.slice', 'network-online.target']
+**SupplementaryGroups=[]
+**EnvironmentFiles=/home/pi/printer_data/systemd/klipper.env
+**ExecStart=/home/pi/klippy-env/bin/python $KLIPPER_ARGS
+**WorkingDirectory=/home/pi/klipper
+**FragmentPath=/etc/systemd/system/klipper.service
+**Description=Klipper 3D Printer Firmware SV1
+**User=pi
+2024-03-06 12:48:17,469 [server.py:add_log_rollover_item()] - Klipper Version: v0.12.0-115-gb98375b3-dirty
+2024-03-06 12:48:20,527 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 12:48:20,528 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 12:48:20,779 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 12:48:21,077 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 12:48:21,531 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 12:48:23,391 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 127.0.0.1
+2024-03-06 12:48:23,431 [application.py:log_request()] - 101 GET /websocket?token=JVJJPWU6SZR52VCWUQSCZTRYM4S22L7V (127.0.0.1) [_TRUSTED_USER_] 5.32ms
+2024-03-06 12:48:23,432 [websockets.py:open()] - Websocket Opened: ID: 547728978704, Proxied: False, User Agent: , Host Name: 127.0.0.1
+2024-03-06 12:48:24,208 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 12:50:01,122 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 192.168.1.91
+2024-03-06 12:50:01,124 [application.py:log_request()] - 101 GET /websocket (192.168.1.91) [_TRUSTED_USER_] 1.75ms
+2024-03-06 12:50:01,124 [websockets.py:open()] - Websocket Opened: ID: 547728870992, Proxied: True, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36, Host Name: 192.168.1.5
+2024-03-06 12:50:01,155 [websockets.py:_handle_identify()] - Websocket 547728870992 Client Identified - Name: mainsail, Version: 2.10.0, Type: web
+2024-03-06 13:02:31,233 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 13:02:32,491 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 13:02:40,660 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 13:02:40,773 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 13:02:40,801 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 13:02:41,196 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 13:02:41,454 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 13:02:42,230 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 13:06:37,279 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 13:06:38,538 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 13:06:46,962 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 13:06:46,966 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 13:06:47,099 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 13:06:47,213 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 13:06:47,484 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 13:06:48,002 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 13:22:13,866 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 13:22:13,867 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 13:22:23,871 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 13:22:23,872 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 13:28:12,826 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 13:28:14,084 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 13:28:19,978 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 13:28:22,536 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 13:28:22,539 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 13:28:22,787 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 13:28:23,068 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 13:28:23,580 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 13:29:32,696 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.gcode.script, Code: 400, Message: No trigger on probe after full movement
+2024-03-06 13:32:53,265 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 13:32:54,523 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 13:33:02,957 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 13:33:02,960 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 13:33:03,079 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 13:33:03,229 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 13:33:03,457 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 13:33:04,012 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 13:36:10,437 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 13:36:11,696 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 13:36:19,955 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 13:36:19,958 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 13:36:20,048 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 13:36:20,205 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 13:36:20,450 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 13:36:20,994 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 13:38:01,333 [websockets.py:write_to_socket()] - Websocket closed while writing: 547728870992
+2024-03-06 13:38:06,126 [websockets.py:on_close()] - Websocket Closed: ID: 547728870992 Close Code: None, Close Reason: None, Pong Time Elapsed: 43.96
+2024-03-06 13:38:22,143 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 13:39:22,144 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 13:40:22,145 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 13:41:22,146 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.00 seconds
+2024-03-06 13:42:22,147 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 300.00 seconds
+2024-03-06 13:43:22,148 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 360.01 seconds
+2024-03-06 13:43:51,845 [application.py:log_request()] - 101 GET /websocket (192.168.1.91) [_TRUSTED_USER_] 1.43ms
+2024-03-06 13:43:51,845 [websockets.py:open()] - Websocket Opened: ID: 547727839568, Proxied: True, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36, Host Name: 192.168.1.5
+2024-03-06 13:43:51,851 [websockets.py:_handle_identify()] - Websocket 547727839568 Client Identified - Name: mainsail, Version: 2.10.0, Type: web
+2024-03-06 13:44:22,149 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 420.01 seconds
+2024-03-06 13:45:22,150 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 480.01 seconds
+2024-03-06 13:46:22,151 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 540.01 seconds
+2024-03-06 13:47:22,153 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 600.01 seconds
+2024-03-06 13:48:22,155 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 660.01 seconds
+2024-03-06 13:49:22,156 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 720.01 seconds
+2024-03-06 13:50:22,157 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 780.01 seconds
+2024-03-06 13:51:22,159 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 840.02 seconds
+2024-03-06 13:52:22,161 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 900.02 seconds
+2024-03-06 13:53:22,162 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 960.02 seconds
+2024-03-06 13:54:22,163 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1020.02 seconds
+2024-03-06 13:55:22,165 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1080.02 seconds
+2024-03-06 13:56:22,166 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1140.02 seconds
+2024-03-06 13:57:22,167 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1200.02 seconds
+2024-03-06 13:58:22,168 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1260.03 seconds
+2024-03-06 13:59:22,170 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1320.03 seconds
+2024-03-06 14:00:22,171 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1380.03 seconds
+2024-03-06 14:01:22,172 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1440.03 seconds
+2024-03-06 14:02:22,173 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1500.03 seconds
+2024-03-06 14:03:22,174 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1560.03 seconds
+2024-03-06 14:04:22,176 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1620.03 seconds
+2024-03-06 14:05:22,176 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1680.03 seconds
+2024-03-06 14:06:22,178 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1740.04 seconds
+2024-03-06 14:07:16,697 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 14:07:16,698 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 14:07:22,180 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1800.04 seconds
+2024-03-06 14:07:26,713 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 14:07:26,714 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 14:08:22,180 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1860.04 seconds
+2024-03-06 14:09:22,182 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1920.04 seconds
+2024-03-06 14:10:22,184 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1980.04 seconds
+2024-03-06 14:11:22,185 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2040.04 seconds
+2024-03-06 14:12:22,186 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2100.04 seconds
+2024-03-06 14:13:22,188 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2160.05 seconds
+2024-03-06 14:14:22,189 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2220.05 seconds
+2024-03-06 14:15:22,191 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2280.05 seconds
+2024-03-06 14:16:22,192 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2340.05 seconds
+2024-03-06 14:17:22,194 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2400.05 seconds
+2024-03-06 14:18:22,197 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2460.05 seconds
+2024-03-06 14:19:22,198 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2520.06 seconds
+2024-03-06 14:20:22,201 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2580.06 seconds
+2024-03-06 14:21:22,203 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2640.06 seconds
+2024-03-06 14:22:17,655 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 14:22:17,656 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 14:22:22,205 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2700.06 seconds
+2024-03-06 14:22:27,664 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 14:22:27,665 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 14:23:22,207 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2760.06 seconds
+2024-03-06 14:24:22,209 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2820.07 seconds
+2024-03-06 14:25:22,210 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2880.07 seconds
+2024-03-06 14:26:22,212 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2940.07 seconds
+2024-03-06 14:27:22,214 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3000.07 seconds
+2024-03-06 14:28:22,216 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3060.07 seconds
+2024-03-06 14:29:22,219 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3120.08 seconds
+2024-03-06 14:30:22,220 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3180.08 seconds
+2024-03-06 14:31:22,222 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3240.08 seconds
+2024-03-06 14:32:22,223 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3300.08 seconds
+2024-03-06 14:33:22,224 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3360.08 seconds
+2024-03-06 14:34:22,225 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3420.08 seconds
+2024-03-06 14:35:22,227 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3480.08 seconds
+2024-03-06 14:36:22,228 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3540.09 seconds
+2024-03-06 14:37:18,583 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 14:37:18,584 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 14:37:22,230 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3600.09 seconds
+2024-03-06 14:37:28,597 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 14:37:28,597 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 14:38:11,214 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 127.0.0.1
+2024-03-06 14:38:22,232 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3660.09 seconds
+2024-03-06 14:39:22,234 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3720.09 seconds
+2024-03-06 14:40:22,235 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3780.09 seconds
+2024-03-06 14:41:22,235 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3840.09 seconds
+2024-03-06 14:42:22,237 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3900.09 seconds
+2024-03-06 14:43:22,238 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3960.10 seconds
+2024-03-06 14:44:22,240 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4020.10 seconds
+2024-03-06 14:45:22,241 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4080.10 seconds
+2024-03-06 14:46:22,243 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4140.10 seconds
+2024-03-06 14:47:22,244 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4200.10 seconds
+2024-03-06 14:48:11,215 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 192.168.1.91
+2024-03-06 14:48:22,245 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4260.10 seconds
+2024-03-06 14:49:22,246 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4320.10 seconds
+2024-03-06 14:50:22,248 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4380.11 seconds
+2024-03-06 14:51:22,248 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4440.11 seconds
+2024-03-06 14:52:19,525 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 14:52:19,526 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 14:52:22,249 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4500.11 seconds
+2024-03-06 14:52:29,540 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 14:52:29,541 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 14:53:22,251 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4560.11 seconds
+2024-03-06 14:54:22,252 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4620.11 seconds
+2024-03-06 14:55:22,253 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4680.11 seconds
+2024-03-06 14:56:22,254 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4740.11 seconds
+2024-03-06 14:57:22,256 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4800.11 seconds
+2024-03-06 14:58:22,257 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4860.12 seconds
+2024-03-06 14:59:22,259 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4920.12 seconds
+2024-03-06 15:00:22,260 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4980.12 seconds
+2024-03-06 15:01:22,261 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5040.12 seconds
+2024-03-06 15:02:22,263 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5100.12 seconds
+2024-03-06 15:03:22,264 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5160.12 seconds
+2024-03-06 15:04:22,267 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5220.12 seconds
+2024-03-06 15:05:22,268 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5280.13 seconds
+2024-03-06 15:06:22,269 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5340.13 seconds
+2024-03-06 15:07:20,417 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 15:07:20,421 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 15:07:22,270 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5400.13 seconds
+2024-03-06 15:07:30,422 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 15:07:30,424 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 15:08:22,271 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5460.13 seconds
+2024-03-06 15:09:22,273 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5520.13 seconds
+2024-03-06 15:10:22,274 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5580.13 seconds
+2024-03-06 15:11:22,275 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5640.13 seconds
+2024-03-06 15:12:22,278 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5700.14 seconds
+2024-03-06 15:13:22,279 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5760.14 seconds
+2024-03-06 15:14:22,281 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5820.14 seconds
+2024-03-06 15:15:22,282 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5880.14 seconds
+2024-03-06 15:16:22,283 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5940.14 seconds
+2024-03-06 15:17:22,285 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6000.14 seconds
+2024-03-06 15:18:22,286 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6060.14 seconds
+2024-03-06 15:19:22,286 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6120.14 seconds
+2024-03-06 15:20:22,287 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6180.14 seconds
+2024-03-06 15:21:22,288 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6240.15 seconds
+2024-03-06 15:22:22,289 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6300.15 seconds
+2024-03-06 15:23:22,290 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6360.15 seconds
+2024-03-06 15:24:22,291 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6420.15 seconds
+2024-03-06 15:25:22,293 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6480.15 seconds
+2024-03-06 15:26:22,295 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6540.15 seconds
+2024-03-06 15:27:22,297 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6600.15 seconds
+2024-03-06 15:28:22,299 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6660.16 seconds
+2024-03-06 15:29:22,300 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6720.16 seconds
+2024-03-06 15:30:22,302 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6780.16 seconds
+2024-03-06 15:31:22,303 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6840.16 seconds
+2024-03-06 15:32:22,304 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6900.16 seconds
+2024-03-06 15:33:22,305 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6960.16 seconds
+2024-03-06 15:34:22,306 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7020.16 seconds
+2024-03-06 15:35:22,307 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7080.16 seconds
+2024-03-06 15:36:22,309 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7140.17 seconds
+2024-03-06 15:37:22,309 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7200.17 seconds
+2024-03-06 15:38:22,311 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7260.17 seconds
+2024-03-06 15:39:22,312 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7320.17 seconds
+2024-03-06 15:40:22,313 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7380.17 seconds
+2024-03-06 15:41:22,314 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7440.17 seconds
+2024-03-06 15:42:22,316 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7500.17 seconds
+2024-03-06 15:43:22,316 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7560.17 seconds
+2024-03-06 15:44:22,318 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7620.18 seconds
+2024-03-06 15:45:22,319 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7680.18 seconds
+2024-03-06 15:46:22,321 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7740.18 seconds
+2024-03-06 15:47:22,322 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7800.18 seconds
+2024-03-06 15:48:22,323 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7860.18 seconds
+2024-03-06 15:49:22,324 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7920.18 seconds
+2024-03-06 15:50:22,325 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7980.18 seconds
+2024-03-06 15:51:22,326 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8040.18 seconds
+2024-03-06 15:52:22,328 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8100.19 seconds
+2024-03-06 15:53:22,329 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8160.19 seconds
+2024-03-06 15:54:22,331 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8220.19 seconds
+2024-03-06 15:55:22,333 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8280.19 seconds
+2024-03-06 15:56:22,334 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8340.19 seconds
+2024-03-06 15:57:22,335 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8400.19 seconds
+2024-03-06 15:58:22,338 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8460.20 seconds
+2024-03-06 15:59:22,339 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8520.20 seconds
+2024-03-06 16:00:22,340 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8580.20 seconds
+2024-03-06 16:01:22,342 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8640.20 seconds
+2024-03-06 16:02:22,343 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8700.20 seconds
+2024-03-06 16:03:22,344 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8760.20 seconds
+2024-03-06 16:04:22,346 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8820.20 seconds
+2024-03-06 16:05:22,348 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8880.21 seconds
+2024-03-06 16:06:22,349 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8940.21 seconds
+2024-03-06 16:07:22,350 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9000.21 seconds
+2024-03-06 16:08:22,351 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9060.21 seconds
+2024-03-06 16:09:22,352 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9120.21 seconds
+2024-03-06 16:10:22,354 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9180.21 seconds
+2024-03-06 16:11:22,355 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9240.21 seconds
+2024-03-06 16:12:22,357 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9300.21 seconds
+2024-03-06 16:13:22,358 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9360.22 seconds
+2024-03-06 16:14:22,361 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9420.22 seconds
+2024-03-06 16:15:22,362 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9480.22 seconds
+2024-03-06 16:16:22,364 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9540.22 seconds
+2024-03-06 16:17:22,365 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9600.22 seconds
+2024-03-06 16:18:22,366 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9660.22 seconds
+2024-03-06 16:19:22,368 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9720.23 seconds
+2024-03-06 16:20:22,369 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9780.23 seconds
+2024-03-06 16:21:22,370 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9840.23 seconds
+2024-03-06 16:22:14,861 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 16:22:14,862 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 16:22:22,371 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9900.23 seconds
+2024-03-06 16:22:24,871 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 16:22:24,872 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 16:23:22,372 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9960.23 seconds
+2024-03-06 16:24:22,374 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10020.23 seconds
+2024-03-06 16:25:22,375 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10080.23 seconds
+2024-03-06 16:26:22,376 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10140.23 seconds
+2024-03-06 16:27:22,378 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10200.24 seconds
+2024-03-06 16:28:22,379 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10260.24 seconds
+2024-03-06 16:29:22,380 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10320.24 seconds
+2024-03-06 16:30:22,382 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10380.24 seconds
+2024-03-06 16:31:22,383 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10440.24 seconds
+2024-03-06 16:32:22,385 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10500.24 seconds
+2024-03-06 16:33:22,387 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10560.24 seconds
+2024-03-06 16:34:22,388 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10620.25 seconds
+2024-03-06 16:35:22,390 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10680.25 seconds
+2024-03-06 16:36:22,391 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10740.25 seconds
+2024-03-06 16:37:15,719 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 16:37:15,719 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 16:37:22,393 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10800.25 seconds
+2024-03-06 16:37:25,730 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 16:37:25,731 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 16:38:22,395 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10860.25 seconds
+2024-03-06 16:39:22,396 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10920.25 seconds
+2024-03-06 16:40:22,397 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10980.25 seconds
+2024-03-06 16:41:22,398 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11040.26 seconds
+2024-03-06 16:42:22,399 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11100.26 seconds
+2024-03-06 16:43:22,400 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11160.26 seconds
+2024-03-06 16:44:22,401 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11220.26 seconds
+2024-03-06 16:45:22,402 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11280.26 seconds
+2024-03-06 16:46:22,403 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11340.26 seconds
+2024-03-06 16:47:22,405 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11400.26 seconds
+2024-03-06 16:48:22,406 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11460.26 seconds
+2024-03-06 16:49:22,407 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11520.26 seconds
+2024-03-06 16:50:22,408 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11580.27 seconds
+2024-03-06 16:51:22,409 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11640.27 seconds
+2024-03-06 16:52:16,646 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 16:52:16,646 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 16:52:22,411 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11700.27 seconds
+2024-03-06 16:52:26,660 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 16:52:26,663 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 16:53:22,413 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11760.27 seconds
+2024-03-06 16:54:22,414 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11820.27 seconds
+2024-03-06 16:55:22,416 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11880.27 seconds
+2024-03-06 16:56:22,418 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11940.28 seconds
+2024-03-06 16:57:22,419 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12000.28 seconds
+2024-03-06 16:58:22,420 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12060.28 seconds
+2024-03-06 16:59:22,421 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12120.28 seconds
+2024-03-06 17:00:22,422 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12180.28 seconds
+2024-03-06 17:01:22,424 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12240.28 seconds
+2024-03-06 17:02:22,426 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12300.28 seconds
+2024-03-06 17:03:22,427 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12360.28 seconds
+2024-03-06 17:04:22,430 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12420.29 seconds
+2024-03-06 17:05:22,431 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12480.29 seconds
+2024-03-06 17:06:22,433 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12540.29 seconds
+2024-03-06 17:07:17,603 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 17:07:17,604 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 17:07:22,435 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12600.29 seconds
+2024-03-06 17:07:27,622 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 17:07:27,623 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 17:08:22,437 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12660.29 seconds
+2024-03-06 17:09:22,437 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12720.29 seconds
+2024-03-06 17:10:22,439 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12780.30 seconds
+2024-03-06 17:11:22,440 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12840.30 seconds
+2024-03-06 17:12:22,442 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12900.30 seconds
+2024-03-06 17:13:22,443 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 12960.30 seconds
+2024-03-06 17:14:22,444 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13020.30 seconds
+2024-03-06 17:15:22,445 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13080.30 seconds
+2024-03-06 17:16:22,447 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 13140.30 seconds
+2024-03-06 17:19:24,075 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 17:19:25,339 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 17:19:27,380 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 127.0.0.1
+2024-03-06 17:19:33,869 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 17:19:33,985 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 17:19:33,992 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 17:19:34,203 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 17:19:34,461 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 17:19:34,948 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 17:23:30,171 [common.py:build_error()] - JSON-RPC Request Error - Requested Method: printer.gcode.script, Code: 400, Message: Must home axis first: 17.149 18.191 0.026 [0.000]
+2024-03-06 17:30:51,984 [websockets.py:write_to_socket()] - Websocket closed while writing: 547727839568
+2024-03-06 17:30:56,848 [websockets.py:on_close()] - Websocket Closed: ID: 547727839568 Close Code: None, Close Reason: None, Pong Time Elapsed: 44.94
+2024-03-06 17:31:10,534 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 60.00 seconds
+2024-03-06 17:32:10,537 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 120.00 seconds
+2024-03-06 17:33:10,538 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 180.00 seconds
+2024-03-06 17:34:10,540 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 240.01 seconds
+2024-03-06 17:35:10,541 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 300.01 seconds
+2024-03-06 17:36:10,542 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 360.01 seconds
+2024-03-06 17:37:10,543 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 420.01 seconds
+2024-03-06 17:37:19,487 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 17:37:19,488 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 17:37:29,500 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 17:37:29,502 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 17:38:10,545 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 480.01 seconds
+2024-03-06 17:38:36,089 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 192.168.1.91
+2024-03-06 17:38:36,090 [application.py:log_request()] - 101 GET /websocket (192.168.1.91) [_TRUSTED_USER_] 1.77ms
+2024-03-06 17:38:36,091 [websockets.py:open()] - Websocket Opened: ID: 547698345168, Proxied: True, User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36, Host Name: 192.168.1.5
+2024-03-06 17:38:36,103 [websockets.py:_handle_identify()] - Websocket 547698345168 Client Identified - Name: mainsail, Version: 2.10.0, Type: web
+2024-03-06 17:39:10,546 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 540.01 seconds
+2024-03-06 17:40:10,547 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 600.01 seconds
+2024-03-06 17:41:10,548 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 660.02 seconds
+2024-03-06 17:42:10,549 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 720.02 seconds
+2024-03-06 17:43:10,550 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 780.02 seconds
+2024-03-06 17:44:10,552 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 840.02 seconds
+2024-03-06 17:45:10,554 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 900.02 seconds
+2024-03-06 17:46:10,555 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 960.02 seconds
+2024-03-06 17:47:10,556 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1020.02 seconds
+2024-03-06 17:48:10,558 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1080.02 seconds
+2024-03-06 17:49:10,560 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1140.03 seconds
+2024-03-06 17:50:10,562 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1200.03 seconds
+2024-03-06 17:51:10,562 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1260.03 seconds
+2024-03-06 17:52:10,563 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1320.03 seconds
+2024-03-06 17:53:10,565 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1380.03 seconds
+2024-03-06 17:54:10,566 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1440.03 seconds
+2024-03-06 17:55:10,567 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1500.03 seconds
+2024-03-06 17:56:10,568 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1560.04 seconds
+2024-03-06 17:57:10,569 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1620.04 seconds
+2024-03-06 17:58:10,570 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1680.04 seconds
+2024-03-06 17:59:10,572 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1740.04 seconds
+2024-03-06 18:00:10,572 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1800.04 seconds
+2024-03-06 18:01:10,573 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1860.04 seconds
+2024-03-06 18:02:10,574 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1920.04 seconds
+2024-03-06 18:03:10,577 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 1980.04 seconds
+2024-03-06 18:04:10,578 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2040.05 seconds
+2024-03-06 18:05:10,580 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2100.05 seconds
+2024-03-06 18:06:10,581 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2160.05 seconds
+2024-03-06 18:07:10,583 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2220.05 seconds
+2024-03-06 18:08:10,584 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2280.05 seconds
+2024-03-06 18:09:10,585 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2340.05 seconds
+2024-03-06 18:10:10,586 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2400.05 seconds
+2024-03-06 18:11:10,588 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2460.06 seconds
+2024-03-06 18:12:10,590 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2520.06 seconds
+2024-03-06 18:13:10,592 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2580.06 seconds
+2024-03-06 18:14:10,595 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2640.06 seconds
+2024-03-06 18:15:10,598 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2700.06 seconds
+2024-03-06 18:16:10,600 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2760.07 seconds
+2024-03-06 18:17:10,602 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2820.07 seconds
+2024-03-06 18:18:10,604 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2880.07 seconds
+2024-03-06 18:19:10,605 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 2940.07 seconds
+2024-03-06 18:20:10,607 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3000.07 seconds
+2024-03-06 18:21:10,608 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3060.07 seconds
+2024-03-06 18:22:10,609 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3120.08 seconds
+2024-03-06 18:23:10,610 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3180.08 seconds
+2024-03-06 18:23:11,262 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 127.0.0.1
+2024-03-06 18:24:10,610 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3240.08 seconds
+2024-03-06 18:25:10,613 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3300.08 seconds
+2024-03-06 18:26:10,614 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3360.08 seconds
+2024-03-06 18:27:10,617 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3420.08 seconds
+2024-03-06 18:28:10,618 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3480.08 seconds
+2024-03-06 18:29:10,619 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3540.09 seconds
+2024-03-06 18:30:10,619 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3600.09 seconds
+2024-03-06 18:31:10,621 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3660.09 seconds
+2024-03-06 18:32:10,621 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3720.09 seconds
+2024-03-06 18:33:10,624 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3780.09 seconds
+2024-03-06 18:34:10,625 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3840.09 seconds
+2024-03-06 18:35:10,626 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3900.09 seconds
+2024-03-06 18:36:10,628 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 3960.09 seconds
+2024-03-06 18:37:10,629 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4020.10 seconds
+2024-03-06 18:38:10,630 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4080.10 seconds
+2024-03-06 18:39:10,631 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4140.10 seconds
+2024-03-06 18:40:10,633 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4200.10 seconds
+2024-03-06 18:41:10,634 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4260.10 seconds
+2024-03-06 18:42:10,636 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4320.10 seconds
+2024-03-06 18:43:10,637 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4380.10 seconds
+2024-03-06 18:43:11,267 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 192.168.1.91
+2024-03-06 18:44:10,639 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4440.11 seconds
+2024-03-06 18:45:10,641 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4500.11 seconds
+2024-03-06 18:46:10,642 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4560.11 seconds
+2024-03-06 18:47:10,643 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4620.11 seconds
+2024-03-06 18:48:10,645 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4680.11 seconds
+2024-03-06 18:49:10,646 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4740.11 seconds
+2024-03-06 18:50:10,648 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4800.11 seconds
+2024-03-06 18:51:10,649 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4860.12 seconds
+2024-03-06 18:52:10,651 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4920.12 seconds
+2024-03-06 18:52:24,237 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 18:52:24,238 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 18:52:34,249 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 18:52:34,251 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 18:53:10,652 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 4980.12 seconds
+2024-03-06 18:54:10,654 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5040.12 seconds
+2024-03-06 18:55:10,655 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5100.12 seconds
+2024-03-06 18:56:10,656 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5160.12 seconds
+2024-03-06 18:57:10,658 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5220.13 seconds
+2024-03-06 18:58:10,661 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5280.13 seconds
+2024-03-06 18:59:10,662 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5340.13 seconds
+2024-03-06 19:00:10,664 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5400.13 seconds
+2024-03-06 19:01:10,665 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5460.13 seconds
+2024-03-06 19:02:10,666 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5520.13 seconds
+2024-03-06 19:03:10,669 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5580.14 seconds
+2024-03-06 19:04:10,670 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5640.14 seconds
+2024-03-06 19:05:10,671 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5700.14 seconds
+2024-03-06 19:06:10,672 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5760.14 seconds
+2024-03-06 19:07:10,674 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5820.14 seconds
+2024-03-06 19:08:10,675 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5880.14 seconds
+2024-03-06 19:09:10,677 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 5940.14 seconds
+2024-03-06 19:10:10,679 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6000.15 seconds
+2024-03-06 19:11:10,680 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6060.15 seconds
+2024-03-06 19:12:10,683 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6120.15 seconds
+2024-03-06 19:13:10,684 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6180.15 seconds
+2024-03-06 19:14:10,685 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6240.15 seconds
+2024-03-06 19:15:10,686 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6300.15 seconds
+2024-03-06 19:16:10,688 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6360.16 seconds
+2024-03-06 19:17:10,690 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6420.16 seconds
+2024-03-06 19:18:10,692 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6480.16 seconds
+2024-03-06 19:19:10,694 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6540.16 seconds
+2024-03-06 19:20:10,695 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6600.16 seconds
+2024-03-06 19:21:10,696 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6660.16 seconds
+2024-03-06 19:22:10,699 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6720.17 seconds
+2024-03-06 19:22:16,095 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 19:22:16,096 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 19:22:26,109 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 19:22:26,110 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 19:23:10,700 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6780.17 seconds
+2024-03-06 19:24:10,701 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6840.17 seconds
+2024-03-06 19:25:10,702 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6900.17 seconds
+2024-03-06 19:26:10,704 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 6960.17 seconds
+2024-03-06 19:27:10,706 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7020.17 seconds
+2024-03-06 19:28:10,707 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7080.17 seconds
+2024-03-06 19:29:10,708 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7140.18 seconds
+2024-03-06 19:30:10,709 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7200.18 seconds
+2024-03-06 19:31:10,711 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7260.18 seconds
+2024-03-06 19:32:10,712 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7320.18 seconds
+2024-03-06 19:33:10,713 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7380.18 seconds
+2024-03-06 19:34:10,714 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7440.18 seconds
+2024-03-06 19:35:10,715 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7500.18 seconds
+2024-03-06 19:36:10,716 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7560.18 seconds
+2024-03-06 19:37:10,718 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7620.18 seconds
+2024-03-06 19:37:17,035 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 19:37:17,036 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 19:37:27,035 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 19:37:27,036 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 19:38:10,719 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7680.19 seconds
+2024-03-06 19:39:10,720 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7740.19 seconds
+2024-03-06 19:40:10,721 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7800.19 seconds
+2024-03-06 19:41:10,722 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7860.19 seconds
+2024-03-06 19:42:10,724 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7920.19 seconds
+2024-03-06 19:43:10,725 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 7980.19 seconds
+2024-03-06 19:44:10,726 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8040.19 seconds
+2024-03-06 19:45:10,728 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8100.20 seconds
+2024-03-06 19:46:10,729 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8160.20 seconds
+2024-03-06 19:47:10,731 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8220.20 seconds
+2024-03-06 19:48:10,732 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8280.20 seconds
+2024-03-06 19:49:10,733 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8340.20 seconds
+2024-03-06 19:50:10,734 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8400.20 seconds
+2024-03-06 19:51:10,735 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8460.20 seconds
+2024-03-06 19:52:10,736 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8520.20 seconds
+2024-03-06 19:52:17,980 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 19:52:17,981 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 19:52:27,983 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 19:52:27,983 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 19:53:10,739 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8580.21 seconds
+2024-03-06 19:54:10,740 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8640.21 seconds
+2024-03-06 19:55:10,741 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8700.21 seconds
+2024-03-06 19:56:10,742 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8760.21 seconds
+2024-03-06 19:57:10,744 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8820.21 seconds
+2024-03-06 19:58:10,745 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8880.21 seconds
+2024-03-06 19:59:10,748 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 8940.21 seconds
+2024-03-06 20:00:10,750 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9000.22 seconds
+2024-03-06 20:01:10,751 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9060.22 seconds
+2024-03-06 20:02:10,752 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9120.22 seconds
+2024-03-06 20:03:10,754 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9180.22 seconds
+2024-03-06 20:04:10,755 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9240.22 seconds
+2024-03-06 20:05:10,756 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9300.22 seconds
+2024-03-06 20:06:10,758 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9360.23 seconds
+2024-03-06 20:07:10,759 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9420.23 seconds
+2024-03-06 20:07:18,926 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 20:07:18,928 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 20:07:28,929 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 20:07:28,931 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 20:08:10,760 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9480.23 seconds
+2024-03-06 20:09:10,761 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9540.23 seconds
+2024-03-06 20:10:10,762 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9600.23 seconds
+2024-03-06 20:11:10,764 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9660.23 seconds
+2024-03-06 20:12:10,765 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9720.23 seconds
+2024-03-06 20:13:10,766 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9780.23 seconds
+2024-03-06 20:14:10,768 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9840.23 seconds
+2024-03-06 20:15:10,769 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9900.24 seconds
+2024-03-06 20:16:10,770 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 9960.24 seconds
+2024-03-06 20:17:10,772 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10020.24 seconds
+2024-03-06 20:18:10,773 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10080.24 seconds
+2024-03-06 20:19:10,775 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10140.24 seconds
+2024-03-06 20:20:10,776 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10200.24 seconds
+2024-03-06 20:21:10,778 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10260.25 seconds
+2024-03-06 20:22:10,779 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10320.25 seconds
+2024-03-06 20:23:10,780 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10380.25 seconds
+2024-03-06 20:24:10,780 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10440.25 seconds
+2024-03-06 20:25:10,782 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10500.25 seconds
+2024-03-06 20:26:10,784 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10560.25 seconds
+2024-03-06 20:27:10,785 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10620.25 seconds
+2024-03-06 20:28:10,786 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10680.25 seconds
+2024-03-06 20:29:10,787 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10740.25 seconds
+2024-03-06 20:30:10,788 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10800.25 seconds
+2024-03-06 20:31:10,789 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10860.26 seconds
+2024-03-06 20:32:10,790 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10920.26 seconds
+2024-03-06 20:33:10,792 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 10980.26 seconds
+2024-03-06 20:34:10,793 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11040.26 seconds
+2024-03-06 20:35:10,794 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11100.26 seconds
+2024-03-06 20:36:10,795 [klippy_connection.py:wait()] - Request 'gcode/script' pending: 11160.26 seconds
+2024-03-06 21:52:15,515 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 21:52:15,516 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 21:52:25,528 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 21:52:25,530 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 22:01:42,223 [klippy_connection.py:_on_connection_closed()] - Klippy Connection Removed
+2024-03-06 22:01:43,496 [klippy_connection.py:_do_connect()] - Klippy Connection Established
+2024-03-06 22:01:46,382 [authorization.py:_check_trusted_connection()] - Trusted Connection Detected, IP: 127.0.0.1
+2024-03-06 22:01:49,419 [file_manager.py:get_file_list()] - Updating File List <gcodes>...
+2024-03-06 22:01:52,373 [klippy_connection.py:_request_initial_subscriptions()] - Webhooks Subscribed
+2024-03-06 22:01:52,376 [klippy_connection.py:_request_initial_subscriptions()] - GCode Output Subscribed
+2024-03-06 22:01:52,631 [job_state.py:_handle_started()] - Job state initialized: standby
+2024-03-06 22:01:52,888 [klippy_connection.py:_check_ready()] - Klippy ready
+2024-03-06 22:01:53,663 [data_store.py:_init_sensors()] - Configuring available sensors: ['heater_bed', 'extruder']
+2024-03-06 22:07:16,572 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 22:07:16,573 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 22:07:26,584 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 22:07:26,585 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 22:22:17,530 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 22:22:17,531 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 22:22:27,542 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 22:22:27,543 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 22:37:18,471 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 22:37:18,472 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 22:37:28,497 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 22:37:28,503 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 22:52:19,427 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 22:52:19,428 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 22:52:29,444 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 22:52:29,445 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 23:03:11,322 [authorization.py:_prune_conn_handler()] - Trusted Connection Expired, IP: 127.0.0.1
+2024-03-06 23:07:20,368 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 23:07:20,368 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 23:07:30,375 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 23:07:30,376 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
+2024-03-06 23:22:21,316 [machine.py:_find_public_ip()] - Failed to detect local IP address
+2024-03-06 23:22:21,318 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://127.0.0.1
+2024-03-06 23:22:31,315 [machine.py:_find_public_ip()] - Detected Local IP: 192.168.1.5
+2024-03-06 23:22:31,316 [webcam.py:_set_default_host_ip()] - Default public webcam address set: http://192.168.1.5
